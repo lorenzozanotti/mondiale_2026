@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mondiali 2026 — Dossier Tattico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-color: #F9F8F6;
+  --text-main: #1A1A1A;
+  --text-muted: #666666;
+  --border-color: #1A1A1A;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 3rem 2rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Container allargato per sfruttare lo schermo del PC */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.masthead {
+  text-align: center;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.masthead-label {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.masthead h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.masthead p {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--text-muted);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.group-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Le righe ora sono più alte e spaziate per riempire il monitor */
+.group-row {
+  display: flex;
+  align-items: center;
+  padding: 1.75rem 1rem;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.15);
+  text-decoration: none;
+  color: var(--text-main);
+  transition: background-color 0.2s;
+}
+
+.group-row:hover.active {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.group-row:last-child {
+  border-bottom: 2px solid var(--border-color);
+}
+
+.g-name {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.g-teams {
+  flex-grow: 1;
+  font-size: 1.15rem; /* Testo leggermente più grande per schermi larghi */
+  color: var(--text-main);
+  padding-right: 2rem;
+}
+
+.g-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--text-main);
+  padding-bottom: 3px;
+  white-space: nowrap;
+}
+
+.group-row.disabled {
+  pointer-events: none;
+  color: var(--text-muted);
+}
+.group-row.disabled .g-name,
+.group-row.disabled .g-teams {
+  color: #999;
+}
+.group-row.disabled .g-teams {
+  font-style: italic;
+}
+.group-row.disabled .g-link {
+  border-bottom: none;
+  color: #999;
+}
+
+@media (max-width: 768px) {
+  body { padding: 2rem 1.25rem; }
+  .group-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 1.5rem 0;
+  }
+  .g-name { width: auto; }
+}
+
+.editorial-footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.editorial-footer strong {
+  color: var(--text-main);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <header class="masthead">
+    <span class="masthead-label">Speciale Tattico</span>
+    <h1>Mondiali 2026</h1>
+    <p>Il dossier completo sulla fase a gironi: moduli, interpreti chiave e analisi dei dati delle nazionali qualificate.</p>
+  </header>
+
+  <main class="group-list">
+    
+    <a href="gruppo_a.html" class="group-row active">
+      <div class="g-name">Gruppo A</div>
+      <div class="g-teams">Messico, Sudafrica, Corea del Sud, Cechia</div>
+      <div class="g-link">Leggi l'Analisi</div>
+    </a>
+
+    <div class="group-row disabled"><div class="g-name">Gruppo B</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo C</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo D</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo E</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo F</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo G</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo H</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo I</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo J</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo K</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+    <div class="group-row disabled"><div class="g-name">Gruppo L</div><div class="g-teams">Analisi tattica in fase di elaborazione...</div><div class="g-link">In arrivo</div></div>
+
+  </main>
+
+  <footer class="editorial-footer">
+    A cura di <strong>Lorenzo Zanotti</strong><br>
+    Con il contributo analitico di Andrea Marinozzi, Lorenzo Triolo, Luca Rossini e Tommaso Arone.
+  </footer>
+
+</div>
+
+</body>
+</html>
