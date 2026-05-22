@@ -1,0 +1,572 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mondiali 2026 — Dossier Tattico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#080F1E;
+  --blue:#2563EB;
+  --blue-light:#60A5FA;
+  --gold:#D4A843;
+  --gold-light:#F0C84A;
+  --white:#FFFFFF;
+  --off-white:#F0EDE6;
+  --gray:#8B95A8;
+  --border:rgba(255,255,255,.07);
+  --font-display:'Bebas Neue',sans-serif;
+  --font-serif:'DM Serif Display',Georgia,serif;
+  --font-body:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--navy);color:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+ 
+/* ════════════════════════════════
+   HERO
+════════════════════════════════ */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  overflow:hidden;
+}
+ 
+/* ── campo SVG come sfondo assoluto ── */
+.pitch-bg{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  z-index:0;
+}
+.pitch-bg svg{
+  width:auto;height:90%;
+  max-width:680px;
+  opacity:1;
+  filter:drop-shadow(0 0 60px rgba(10,80,30,.6));
+}
+ 
+/* overlay sfumato sopra il campo */
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(to bottom, rgba(8,15,30,.75) 0%, rgba(8,15,30,.35) 40%, rgba(8,15,30,.55) 70%, rgba(8,15,30,.98) 100%),
+    linear-gradient(to right, rgba(8,15,30,.6) 0%, transparent 40%, transparent 60%, rgba(8,15,30,.6) 100%);
+}
+ 
+/* glow blu atmosferico */
+.hero-glow{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 70% 50% at 50% 40%, rgba(37,99,235,.15) 0%, transparent 70%);
+}
+ 
+/* ── contenuto hero ── */
+.hero-inner{
+  position:relative;z-index:3;
+  max-width:1000px;margin:0 auto;
+  padding:0 3rem 4.5rem;
+  width:100%;
+}
+ 
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-bottom:1.75rem;
+}
+.eyebrow-pip{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 8px var(--gold);
+}
+.eyebrow-text{
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.25em;text-transform:uppercase;
+  color:var(--gold);
+}
+.eyebrow-sep{color:rgba(212,168,67,.35);margin:0 2px}
+ 
+.hero-headline{margin-bottom:1.25rem}
+.hero-headline .kicker{
+  display:block;
+  font-family:var(--font-serif);font-style:italic;
+  font-size:clamp(1.05rem,2vw,1.35rem);
+  color:rgba(255,255,255,.4);
+  margin-bottom:.3rem;letter-spacing:.01em;
+}
+.hero-headline h1{
+  font-family:var(--font-display);
+  font-size:clamp(5.5rem,13vw,11.5rem);
+  letter-spacing:.04em;line-height:.88;
+  color:var(--white);
+  text-shadow:0 0 80px rgba(37,99,235,.4);
+}
+.hero-headline h1 .accent{
+  color:transparent;
+  -webkit-text-stroke:2px var(--blue-light);
+}
+ 
+.hero-deck{
+  font-size:.95rem;color:rgba(255,255,255,.42);
+  max-width:500px;line-height:1.75;
+  margin-bottom:2.5rem;font-weight:400;
+}
+ 
+/* stats pill row */
+.stats-row{
+  display:flex;align-items:stretch;
+  width:fit-content;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;overflow:hidden;
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.stat-cell{
+  padding:.9rem 1.75rem;
+  border-right:1px solid rgba(255,255,255,.07);
+  text-align:center;
+}
+.stat-cell:last-child{border-right:none}
+.stat-n{
+  font-family:var(--font-display);
+  font-size:2rem;color:var(--white);
+  line-height:1;letter-spacing:.04em;
+}
+.stat-l{
+  font-size:.57rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gray);margin-top:5px;
+}
+ 
+/* scroll hint */
+.scroll-hint{
+  position:absolute;bottom:2rem;left:50%;
+  transform:translateX(-50%);
+  z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  opacity:.35;
+  animation:breathe 2.5s ease-in-out infinite;
+}
+.scroll-hint span{font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.scroll-arrow{width:1px;height:28px;background:linear-gradient(to bottom,rgba(255,255,255,.8),transparent)}
+ 
+@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.6}}
+ 
+/* firma */
+.firma{
+  position:absolute;top:2rem;right:3rem;z-index:10;text-align:right;
+}
+.firma-label{font-size:8.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:3px}
+.firma-name{font-family:Palatino,'Palatino Linotype',Georgia,serif;font-size:1.15rem;font-weight:400;font-style:italic;color:rgba(255,255,255,.78);letter-spacing:.02em;line-height:1.2}
+ 
+/* linea orizzontale decorativa dorata */
+.gold-rule{
+  position:absolute;bottom:0;left:0;right:0;
+  height:2px;z-index:4;
+  background:linear-gradient(90deg,transparent 0%,var(--gold) 30%,var(--gold-light) 50%,var(--gold) 70%,transparent 100%);
+  opacity:.6;
+}
+ 
+/* ════════════════════════════════
+   GROUPS SECTION
+════════════════════════════════ */
+.groups-section{background:var(--off-white)}
+.groups-inner{max-width:960px;margin:0 auto;padding:0 2.5rem 5rem}
+ 
+.section-strip{
+  display:flex;align-items:center;gap:16px;
+  padding:2.5rem 0 2.25rem;
+  border-bottom:1.5px solid rgba(0,0,0,.09);
+  margin-bottom:.25rem;
+}
+.strip-left{display:flex;align-items:center;gap:10px}
+.strip-pip{width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0}
+.strip-label{font-size:.62rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#777}
+.strip-line{height:1px;flex:1;background:rgba(0,0,0,.07)}
+.strip-count{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#aaa}
+ 
+/* lista gironi */
+.group-list{display:flex;flex-direction:column}
+ 
+.group-row{
+  display:grid;
+  grid-template-columns:72px 1fr auto;
+  align-items:center;gap:20px;
+  padding:1.3rem .875rem;
+  border-bottom:1px solid rgba(0,0,0,.065);
+  text-decoration:none;color:#111;
+  position:relative;
+  border-radius:6px;
+  margin:0 -.875rem;
+  transition:background .2s;
+}
+.group-row::after{
+  content:'';
+  position:absolute;left:0;top:8px;bottom:8px;
+  width:2.5px;border-radius:2px;
+  background:transparent;
+  transition:background .2s,top .2s,bottom .2s;
+}
+.group-row.active:hover{background:rgba(37,99,235,.045)}
+.group-row.active:hover::after{background:var(--blue);top:0;bottom:0}
+ 
+.g-letter{
+  font-family:var(--font-display);
+  font-size:3.6rem;line-height:1;letter-spacing:.02em;
+  user-select:none;transition:color .2s;
+  color:rgba(0,0,0,.07);
+}
+.group-row.active .g-letter{color:rgba(37,99,235,.14)}
+.group-row.active:hover .g-letter{color:rgba(37,99,235,.22)}
+.group-row.disabled .g-letter{color:rgba(0,0,0,.045)}
+ 
+.g-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#aaa;margin-bottom:4px}
+.g-teams{font-size:.96rem;font-weight:500;color:#1a1a1a;line-height:1.35}
+.group-row.disabled .g-teams{color:#bbb;font-style:italic;font-size:.875rem;font-weight:400}
+.group-row.disabled{pointer-events:none}
+ 
+.g-cta{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--blue);
+  background:rgba(37,99,235,.07);
+  border:1px solid rgba(37,99,235,.18);
+  border-radius:8px;padding:8px 16px;
+  white-space:nowrap;transition:all .2s;
+  text-decoration:none;
+}
+.g-cta svg{width:13px;height:13px;transition:transform .2s;flex-shrink:0}
+.group-row.active:hover .g-cta{background:var(--blue);color:#fff;border-color:var(--blue)}
+.group-row.active:hover .g-cta svg{transform:translateX(3px)}
+.g-cta.coming{color:#c0c0c0;background:transparent;border-color:rgba(0,0,0,.08);pointer-events:none}
+ 
+/* ════════════════════════════════
+   FOOTER
+════════════════════════════════ */
+footer{
+  background:var(--navy);
+  padding:3rem 2.5rem 2.5rem;
+  text-align:center;
+  border-top:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+footer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,168,67,.4),transparent);
+}
+.footer-collab{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:.65rem}
+.footer-names{font-family:Palatino,'Palatino Linotype',Georgia,serif;font-size:.97rem;font-style:italic;color:rgba(255,255,255,.48);line-height:1.9}
+ 
+/* ════════════════════════════════
+   ANIMATIONS
+════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pitchReveal{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:scale(1)}}
+ 
+.eyebrow{animation:fadeUp .7s .08s both}
+.hero-headline{animation:fadeUp .7s .2s both}
+.hero-deck{animation:fadeUp .7s .32s both}
+.stats-row{animation:fadeUp .7s .44s both}
+.pitch-bg{animation:pitchReveal 1.4s .1s both}
+ 
+/* ════════════════════════════════
+   MOBILE
+════════════════════════════════ */
+@media(max-width:680px){
+  .hero-inner{padding:0 1.5rem 4rem}
+  .firma{right:1.5rem;top:1.5rem}
+  .firma-name{font-size:1rem}
+  .hero-headline h1{letter-spacing:.03em}
+  .stats-row{width:100%;border-radius:10px}
+  .stat-cell{flex:1;padding:.7rem .6rem}
+  .stat-n{font-size:1.5rem}
+  .groups-inner{padding:0 1.25rem 3rem}
+  .group-row{
+    grid-template-columns:50px 1fr;
+    grid-template-rows:auto auto;
+    gap:6px 12px;
+    padding:1.1rem .75rem;margin:0 -.75rem;
+  }
+  .g-letter{font-size:2.6rem}
+  .g-cta{grid-column:2;width:fit-content;padding:6px 12px;font-size:.63rem}
+  .g-cta.coming{display:none}
+  .section-strip{padding:1.5rem 0 1.75rem}
+  .pitch-bg svg{height:70%;opacity:.9}
+}
+</style>
+</head>
+<body>
+ 
+<!-- ════════════ HERO ════════════ -->
+<section class="hero">
+ 
+  <!-- campo tattico come sfondo -->
+  <div class="pitch-bg" aria-hidden="true">
+    <svg viewBox="0 0 520 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="g-grass" x1="0" y1="0" x2="0" y2="750" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#0B3D1A"/>
+          <stop offset="50%" stop-color="#0D4820"/>
+          <stop offset="100%" stop-color="#093316"/>
+        </linearGradient>
+        <!-- strisce manto erboso -->
+        <pattern id="stripes" x="0" y="0" width="520" height="75" patternUnits="userSpaceOnUse">
+          <rect y="0" width="520" height="37.5" fill="rgba(255,255,255,.022)"/>
+        </pattern>
+        <!-- glow giocatori blu -->
+        <radialGradient id="rg-blue" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#93C5FD"/>
+          <stop offset="100%" stop-color="#2563EB" stop-opacity=".7"/>
+        </radialGradient>
+        <!-- glow giocatori rossi -->
+        <radialGradient id="rg-red" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FCA5A5"/>
+          <stop offset="100%" stop-color="#DC2626" stop-opacity=".7"/>
+        </radialGradient>
+        <!-- pallone -->
+        <radialGradient id="rg-ball" cx="35%" cy="30%" r="65%">
+          <stop offset="0%" stop-color="#FFFFFF"/>
+          <stop offset="100%" stop-color="#CBD5E1"/>
+        </radialGradient>
+        <!-- filtro glow soft -->
+        <filter id="f-glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="f-glow-sm" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="2.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="f-ball" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="7" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+ 
+      <!-- sfondo verde -->
+      <rect width="520" height="750" fill="url(#g-grass)" rx="16"/>
+      <rect width="520" height="750" fill="url(#stripes)" rx="16"/>
+ 
+      <!-- bordo esterno -->
+      <rect x="22" y="22" width="476" height="706" rx="3"
+            stroke="rgba(255,255,255,.32)" stroke-width="2.2" fill="none"/>
+ 
+      <!-- linea di metà campo -->
+      <line x1="22" y1="375" x2="498" y2="375"
+            stroke="rgba(255,255,255,.25)" stroke-width="1.8"/>
+ 
+      <!-- cerchio centrale -->
+      <circle cx="260" cy="375" r="74"
+              stroke="rgba(255,255,255,.22)" stroke-width="1.8" fill="none"/>
+      <circle cx="260" cy="375" r="3.5"
+              fill="rgba(255,255,255,.40)"/>
+ 
+      <!-- area grande alto -->
+      <rect x="130" y="22" width="260" height="128"
+            stroke="rgba(255,255,255,.25)" stroke-width="1.8" fill="none"/>
+      <!-- area piccola alto -->
+      <rect x="190" y="22" width="140" height="50"
+            stroke="rgba(255,255,255,.18)" stroke-width="1.4" fill="none"/>
+      <!-- arco area alto -->
+      <path d="M168 150 Q260 190 352 150"
+            stroke="rgba(255,255,255,.15)" stroke-width="1.4" fill="none"/>
+      <!-- punto rigore alto -->
+      <circle cx="260" cy="122" r="3" fill="rgba(255,255,255,.35)"/>
+ 
+      <!-- area grande basso -->
+      <rect x="130" y="600" width="260" height="128"
+            stroke="rgba(255,255,255,.25)" stroke-width="1.8" fill="none"/>
+      <!-- area piccola basso -->
+      <rect x="190" y="678" width="140" height="50"
+            stroke="rgba(255,255,255,.18)" stroke-width="1.4" fill="none"/>
+      <!-- arco area basso -->
+      <path d="M168 600 Q260 560 352 600"
+            stroke="rgba(255,255,255,.15)" stroke-width="1.4" fill="none"/>
+      <!-- punto rigore basso -->
+      <circle cx="260" cy="628" r="3" fill="rgba(255,255,255,.35)"/>
+ 
+      <!-- porte -->
+      <rect x="208" y="8" width="104" height="18" rx="2"
+            stroke="rgba(255,255,255,.35)" stroke-width="1.8" fill="rgba(255,255,255,.05)"/>
+      <rect x="208" y="724" width="104" height="18" rx="2"
+            stroke="rgba(255,255,255,.35)" stroke-width="1.8" fill="rgba(255,255,255,.05)"/>
+ 
+      <!-- angoli -->
+      <path d="M22 22 Q36 22 36 36" stroke="rgba(255,255,255,.25)" stroke-width="1.4" fill="none"/>
+      <path d="M498 22 Q484 22 484 36" stroke="rgba(255,255,255,.25)" stroke-width="1.4" fill="none"/>
+      <path d="M22 728 Q36 728 36 714" stroke="rgba(255,255,255,.25)" stroke-width="1.4" fill="none"/>
+      <path d="M498 728 Q484 728 484 714" stroke="rgba(255,255,255,.25)" stroke-width="1.4" fill="none"/>
+ 
+      <!-- ══ SQUADRA BLU — 4-3-3 (difende porta alta) ══ -->
+      <!-- linee di gioco -->
+      <g stroke="rgba(147,197,253,.16)" stroke-width="1.1" fill="none">
+        <line x1="260" y1="82" x2="118" y2="188"/><line x1="260" y1="82" x2="196" y2="183"/>
+        <line x1="260" y1="82" x2="324" y2="183"/><line x1="260" y1="82" x2="402" y2="188"/>
+        <line x1="118" y1="188" x2="156" y2="298"/><line x1="196" y1="183" x2="260" y2="292"/>
+        <line x1="324" y1="183" x2="260" y2="292"/><line x1="402" y1="188" x2="364" y2="298"/>
+        <line x1="156" y1="298" x2="118" y2="360"/><line x1="260" y1="292" x2="260" y2="358"/>
+        <line x1="364" y1="298" x2="402" y2="360"/>
+      </g>
+      <!-- GK blu -->
+      <g filter="url(#f-glow-sm)">
+        <circle cx="260" cy="82" r="11" fill="url(#rg-blue)"/>
+        <text x="260" y="86" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="700" fill="white">1</text>
+      </g>
+      <!-- difensori blu -->
+      <g filter="url(#f-glow-sm)">
+        <circle cx="118" cy="188" r="10" fill="url(#rg-blue)"/>
+        <circle cx="196" cy="183" r="10" fill="url(#rg-blue)"/>
+        <circle cx="324" cy="183" r="10" fill="url(#rg-blue)"/>
+        <circle cx="402" cy="188" r="10" fill="url(#rg-blue)"/>
+      </g>
+      <!-- centrocampisti blu -->
+      <g filter="url(#f-glow-sm)">
+        <circle cx="156" cy="298" r="10" fill="url(#rg-blue)"/>
+        <circle cx="260" cy="292" r="10" fill="url(#rg-blue)"/>
+        <circle cx="364" cy="298" r="10" fill="url(#rg-blue)"/>
+      </g>
+      <!-- attaccanti blu -->
+      <g filter="url(#f-glow-sm)">
+        <circle cx="118" cy="360" r="10" fill="url(#rg-blue)"/>
+        <circle cx="260" cy="355" r="11" fill="url(#rg-blue)"/>
+        <circle cx="402" cy="360" r="10" fill="url(#rg-blue)"/>
+      </g>
+ 
+      <!-- ══ SQUADRA ROSSA — 4-4-2 (difende porta bassa) ══ -->
+      <!-- linee di gioco -->
+      <g stroke="rgba(252,165,165,.13)" stroke-width="1.1" fill="none">
+        <line x1="260" y1="668" x2="118" y2="572"/><line x1="260" y1="668" x2="196" y2="567"/>
+        <line x1="260" y1="668" x2="324" y2="567"/><line x1="260" y1="668" x2="402" y2="572"/>
+        <line x1="118" y1="572" x2="118" y2="468"/><line x1="196" y1="567" x2="196" y2="463"/>
+        <line x1="324" y1="567" x2="324" y2="463"/><line x1="402" y1="572" x2="402" y2="468"/>
+        <line x1="118" y1="468" x2="196" y2="400"/><line x1="196" y1="463" x2="196" y2="400"/>
+        <line x1="324" y1="463" x2="324" y2="400"/><line x1="402" y1="468" x2="324" y2="400"/>
+      </g>
+      <!-- GK rosso -->
+      <g filter="url(#f-glow-sm)">
+        <circle cx="260" cy="668" r="11" fill="url(#rg-red)"/>
+        <text x="260" y="672" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="700" fill="white">1</text>
+      </g>
+      <!-- difensori rossi -->
+      <g filter="url(#f-glow-sm)">
+        <circle cx="118" cy="572" r="10" fill="url(#rg-red)"/>
+        <circle cx="196" cy="567" r="10" fill="url(#rg-red)"/>
+        <circle cx="324" cy="567" r="10" fill="url(#rg-red)"/>
+        <circle cx="402" cy="572" r="10" fill="url(#rg-red)"/>
+      </g>
+      <!-- centrocampisti rossi -->
+      <g filter="url(#f-glow-sm)">
+        <circle cx="118" cy="468" r="10" fill="url(#rg-red)"/>
+        <circle cx="196" cy="463" r="10" fill="url(#rg-red)"/>
+        <circle cx="324" cy="463" r="10" fill="url(#rg-red)"/>
+        <circle cx="402" cy="468" r="10" fill="url(#rg-red)"/>
+      </g>
+      <!-- attaccanti rossi -->
+      <g filter="url(#f-glow-sm)">
+        <circle cx="196" cy="400" r="10" fill="url(#rg-red)"/>
+        <circle cx="324" cy="400" r="10" fill="url(#rg-red)"/>
+      </g>
+ 
+      <!-- ══ PALLONE ══ -->
+      <g filter="url(#f-ball)">
+        <circle cx="260" cy="375" r="10" fill="url(#rg-ball)"/>
+      </g>
+ 
+      <!-- label formazioni -->
+      <text x="34" y="342" font-family="Inter,sans-serif" font-size="9" font-weight="700"
+            fill="rgba(147,197,253,.5)" letter-spacing="1.5">4–3–3</text>
+      <text x="34" y="418" font-family="Inter,sans-serif" font-size="9" font-weight="700"
+            fill="rgba(252,165,165,.45)" letter-spacing="1.5">4–4–2</text>
+    </svg>
+  </div>
+ 
+  <div class="hero-overlay"></div>
+  <div class="hero-glow"></div>
+ 
+  <!-- firma -->
+  <div class="firma">
+    <div class="firma-label">A cura del Team di</div>
+    <div class="firma-name">Lorenzo Zanotti</div>
+  </div>
+ 
+  <!-- contenuto testuale -->
+  <div class="hero-inner">
+    <div class="eyebrow">
+      <div class="eyebrow-pip"></div>
+      <span class="eyebrow-text">FIFA World Cup 2026</span>
+      <span class="eyebrow-sep">·</span>
+      <span class="eyebrow-text">Dossier Tattico</span>
+    </div>
+    <div class="hero-headline">
+      <span class="kicker">Analisi della fase a gironi</span>
+      <h1>MONDIALI<br><span class="accent">2026</span></h1>
+    </div>
+    <p class="hero-deck">Moduli, interpreti chiave e analisi dei dati per tutte le 48 nazionali qualificate. Un report tattico completo per ogni girone.</p>
+    <div class="stats-row">
+      <div class="stat-cell"><div class="stat-n">48</div><div class="stat-l">Nazionali</div></div>
+      <div class="stat-cell"><div class="stat-n">12</div><div class="stat-l">Gironi</div></div>
+      <div class="stat-cell"><div class="stat-n">104</div><div class="stat-l">Partite</div></div>
+      <div class="stat-cell"><div class="stat-n">3</div><div class="stat-l">Paesi ospitanti</div></div>
+    </div>
+  </div>
+ 
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-arrow"></div>
+    <span>Scorri</span>
+  </div>
+ 
+  <div class="gold-rule"></div>
+</section>
+ 
+<!-- ════════════ GROUPS ════════════ -->
+<section class="groups-section">
+  <div class="groups-inner">
+    <div class="section-strip">
+      <div class="strip-left">
+        <div class="strip-pip"></div>
+        <span class="strip-label">Fase a gironi</span>
+      </div>
+      <div class="strip-line"></div>
+      <span class="strip-count">1 di 12 gironi disponibili</span>
+    </div>
+    <div class="group-list">
+ 
+      <a href="gruppo_a.html" class="group-row active">
+        <div class="g-letter" aria-hidden="true">A</div>
+        <div class="g-body">
+          <div class="g-label">Gruppo A</div>
+          <div class="g-teams">Messico &middot; Sudafrica &middot; Corea del Sud &middot; Cechia</div>
+        </div>
+        <div class="g-cta">Leggi l'analisi
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </div>
+      </a>
+ 
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">B</div><div class="g-body"><div class="g-label">Gruppo B</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">C</div><div class="g-body"><div class="g-label">Gruppo C</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">D</div><div class="g-body"><div class="g-label">Gruppo D</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">E</div><div class="g-body"><div class="g-label">Gruppo E</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">F</div><div class="g-body"><div class="g-label">Gruppo F</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">G</div><div class="g-body"><div class="g-label">Gruppo G</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">H</div><div class="g-body"><div class="g-label">Gruppo H</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">I</div><div class="g-body"><div class="g-label">Gruppo I</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">J</div><div class="g-body"><div class="g-label">Gruppo J</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">K</div><div class="g-body"><div class="g-label">Gruppo K</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+      <div class="group-row disabled"><div class="g-letter" aria-hidden="true">L</div><div class="g-body"><div class="g-label">Gruppo L</div><div class="g-teams">Analisi in elaborazione...</div></div><div class="g-cta coming">In arrivo</div></div>
+ 
+    </div>
+  </div>
+</section>
+ 
+<!-- ════════════ FOOTER ════════════ -->
+<footer>
+  <div class="footer-collab">In collaborazione con</div>
+  <div class="footer-names">Andrea Marinozzi &nbsp;·&nbsp; Lorenzo Triolo &nbsp;·&nbsp; Luca Rossini &nbsp;·&nbsp; Tommaso Arone</div>
+</footer>
+ 
+</body>
+</html>
