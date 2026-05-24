@@ -27,8 +27,3 @@ L'intera dashboard è stata sviluppata senza l'ausilio di framework pesanti, pri
 * **Vanilla JavaScript:** Per la logica dell'interfaccia, il filtraggio dei dati, il calcolo delle percentuali (normalizzazione dati) e la gestione delle finestre modali.
 * **Chart.js:** Per il rendering delle visualizzazioni dati (radar charts).
 * **GitHub Pages:** Per il deployment e l'hosting del progetto.
-
-## 👥 Crediti e Collaborazioni
-
-* **Sviluppo e Data Visualization:** Lorenzo Zanotti
-* **Collaboratori e Analisi Tattica:** Andrea Marinozzi, Lorenzo Triolo, Luca Rossini, Tommaso Arone
