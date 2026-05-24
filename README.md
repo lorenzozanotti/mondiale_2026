@@ -6,9 +6,9 @@
 
 Questo progetto ospita una **dashboard web interattiva** dedicata all'analisi avanzata delle nazionali partecipanti alla **FIFA World Cup 2026**. 
 
-Il report copre tutti i 12 gironi della competizione, offrendo una panoramica dettagliata basata sui dati raccolti durante le fasi di qualificazione. L'obiettivo è fornire un'analisi tattica approfondita, unita a visualizzazioni di dati chiare e accessibili da qualsiasi dispositivo.
+Il report è stato sviluppato come strumento di supporto tecnico e statistico per il giornalista sportivo di DAZN **Andrea Marinozzi**, con l'obiettivo di affiancarlo nella preparazione e nello studio dei dati per una sua rubrica di approfondimento pre-Mondiale su YouTube.
 
-Inizialmente sviluppato come report HTML locale, il progetto è stato migrato e ottimizzato su **GitHub Pages** per garantire una perfetta fruibilità e responsività su smartphone e tablet.
+Il progetto copre tutti i 12 gironi della competizione, offrendo una panoramica dettagliata basata sui dati raccolti durante le fasi di qualificazione. L'obiettivo è fornire un'analisi tattica approfondita, unita a visualizzazioni di dati chiare e accessibili da qualsiasi dispositivo. Inizialmente sviluppato come report HTML locale, è stato poi migrato e ottimizzato su **GitHub Pages** per garantire una perfetta fruibilità da mobile.
 
 ## ✨ Funzionalità Principali
 
