@@ -215,13 +215,20 @@ body{font-family:'Inter',sans-serif;background:#03060E;color:#fff;-webkit-font-s
 }
 @keyframes shim{from{background-position:300%}to{background-position:-300%}}
 .hsc{
-  padding:.65rem .9rem;
+  padding:.65rem .3rem; /* Padding laterale ridotto per dare più spazio */
   border-right:1px solid rgba(255,255,255,.06);
   text-align:center;transition:background .2s;
   flex:1;min-width:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center; /* Questo forza il centraggio perfetto sempre */
 }
 .hsc:last-child{border-right:none}
 .hsc:hover{background:rgba(29,78,216,.1)}
+.hscn{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.2rem, 4.5vw, 1.8rem); /* Il font si adatta allo schermo */
+  color:#fff;line-height:1;letter-spacing:.04em;
+  white-space:nowrap;
+}
 .hscn{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#fff;line-height:1;letter-spacing:.04em}
 .hscl{font-size:.48rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:3px;white-space:nowrap}
  
