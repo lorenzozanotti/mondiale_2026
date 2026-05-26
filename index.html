@@ -1,685 +1,1355 @@
 <!DOCTYPE html>
+
 <html lang="it">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
  
+
 <!-- ── SEO ── -->
+
 <title>Mondiali 2026 — Report Tattico</title>
+
 <meta name="description" content="Report tattico completo di tutti e 12 i gironi dei Mondiali 2026. Moduli, uomini chiave e tendenze tattiche di ogni squadra qualificata — tutto quello che serve per capire il mondiale prima che inizi.">
+
 <meta name="keywords" content="Mondiali 2026, FIFA World Cup 2026, report tattico, gironi, calcio, moduli, nazionali">
+
 <meta name="author" content="Lorenzo Zanotti">
+
 <link rel="canonical" href="https://lorenzozanotti.github.io/mondiale_2026/">
+
  
+
 <!-- ── Open Graph (condivisione su WhatsApp, Facebook, ecc.) ── -->
+
 <meta property="og:type" content="website">
+
 <meta property="og:title" content="Mondiali 2026 — Report Tattico">
+
 <meta property="og:description" content="Report tattico completo di tutti e 12 i gironi dei Mondiali 2026. Moduli, interpreti chiave e dati per tutte le 48 nazionali qualificate.">
+
 <meta property="og:url" content="https://lorenzozanotti.github.io/mondiale_2026/">
+
 <meta property="og:locale" content="it_IT">
+
 <!-- og:image: aggiungi qui l'URL di un'immagine di anteprima (1200×630px) quando ce l'hai -->
+
 <!-- <meta property="og:image" content="https://lorenzozanotti.github.io/mondiale_2026/preview.jpg"> -->
+
  
+
 <!-- ── Twitter / X Card ── -->
+
 <meta name="twitter:card" content="summary_large_image">
+
 <meta name="twitter:title" content="Mondiali 2026 — Report Tattico">
+
 <meta name="twitter:description" content="Report tattico completo di tutti e 12 i gironi dei Mondiali 2026.">
+
 <!-- <meta name="twitter:image" content="https://lorenzozanotti.github.io/mondiale_2026/preview.jpg"> -->
+
  
+
 <!-- ── Fonts ── -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
  
+
 <style>
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
 html{scroll-behavior:smooth;overflow-x:hidden}
+
 body{font-family:'Inter',sans-serif;background:#03060E;color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
  
+
 /* ─────────────────────────────────────
+
    LOADER
+
 ───────────────────────────────────── */
+
 #loader{
+
   position:fixed;inset:0;z-index:9999;
+
   background:#03060E;
+
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+
   transition:opacity .5s .2s,visibility .5s .2s;
+
 }
+
 #loader.out{opacity:0;visibility:hidden}
+
 .ld-word{
+
   font-family:'Bebas Neue',sans-serif;
+
   font-size:clamp(1.4rem,6vw,2.2rem);
+
   letter-spacing:.4em;color:rgba(255,255,255,.12);
+
 }
+
 .ld-bar{width:min(200px,55vw);height:1px;background:rgba(255,255,255,.07);overflow:hidden;position:relative}
+
 .ld-bar::after{
+
   content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+
   background:linear-gradient(90deg,transparent,#1D4ED8,#60A5FA,#1D4ED8,transparent);
+
   animation:ldrun 1.0s cubic-bezier(.4,0,.6,1) forwards;
+
 }
+
 @keyframes ldrun{to{left:100%}}
+
  
+
 /* ─────────────────────────────────────
+
    HERO
+
 ───────────────────────────────────── */
+
 .hero{
+
   position:relative;
+
   min-height:100svh;
+
   display:flex;flex-direction:column;
+
   overflow:hidden;
+
   background:linear-gradient(170deg,#020816 0%,#061229 45%,#081640 100%);
+
 }
+
  
+
 #bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+
  
+
 .hgrid{
+
   position:absolute;inset:0;z-index:1;pointer-events:none;
+
   background-image:
+
     linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+
     linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+
   background-size:55px 55px;
+
   mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,black 15%,transparent 72%);
+
   -webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,black 15%,transparent 72%);
+
 }
+
  
+
 .rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);z-index:1;pointer-events:none}
+
 .rg{
+
   position:absolute;border-radius:50%;
+
   top:50%;left:50%;transform:translate(-50%,-50%);
+
   border:1px solid transparent;
+
 }
+
 .rg:nth-child(1){
+
   width:min(88vw,520px);height:min(88vw,520px);
+
   border-color:rgba(29,78,216,.18);
+
   animation:rspin 28s linear infinite;
+
 }
+
 .rg:nth-child(2){
+
   width:min(62vw,370px);height:min(62vw,370px);
+
   border-style:dashed;border-color:rgba(29,78,216,.10);
+
   animation:rspin 18s linear infinite reverse;
+
 }
+
 .rg:nth-child(3){
+
   width:min(38vw,225px);height:min(38vw,225px);
+
   border-color:rgba(96,165,250,.07);
+
   animation:rspin 10s linear infinite;
+
 }
+
 .rg::before{
+
   content:'';position:absolute;top:-3px;left:50%;transform:translateX(-50%);
+
   width:5px;height:5px;border-radius:50%;background:rgba(96,165,250,.5);
+
 }
+
 @keyframes rspin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+
  
+
 .hglow{
+
   position:absolute;top:42%;left:50%;
+
   transform:translate(-50%,-50%);
+
   width:min(100vw,700px);aspect-ratio:1;z-index:1;pointer-events:none;
+
   background:radial-gradient(circle,rgba(29,78,216,.20) 0%,rgba(29,78,216,.07) 35%,transparent 70%);
+
   animation:gpulse 5s ease-in-out infinite;
+
 }
+
 @keyframes gpulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.7}50%{transform:translate(-50%,-50%) scale(1.14);opacity:1}}
+
  
+
 .bgyear{
+
   position:absolute;top:50%;left:50%;
+
   transform:translate(-50%,-50%);
+
   font-family:'Bebas Neue',sans-serif;
+
   font-size:clamp(42vw,58vw,700px);
+
   line-height:1;letter-spacing:-.02em;
+
   color:transparent;
+
   -webkit-text-stroke:1px rgba(255,255,255,.022);
+
   pointer-events:none;user-select:none;z-index:1;
+
   white-space:nowrap;
+
 }
+
  
+
 .firma{
+
   position:absolute;top:1.6rem;right:1.6rem;
+
   z-index:10;text-align:right;
+
 }
+
 .firma small{display:block;font-size:7.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:3px}
+
 .firma em{font-family:Palatino,'Palatino Linotype',Georgia,serif;font-style:italic;font-size:1rem;color:rgba(255,255,255,.65)}
+
  
+
 .hbars{position:absolute;left:0;right:0;z-index:2;pointer-events:none}
+
 .hbars.t{top:0}.hbars.b{bottom:0}
+
 .hb{height:1px;background:linear-gradient(90deg,transparent,rgba(29,78,216,.18) 30%,rgba(96,165,250,.18) 50%,rgba(29,78,216,.18) 70%,transparent)}
+
 .hb+.hb{margin-top:5px;opacity:.5}
+
 .hb+.hb+.hb{margin-top:4px;opacity:.25}
+
  
+
 .hcenter{
+
   flex:1;display:flex;flex-direction:column;
+
   align-items:center;justify-content:center;
+
   text-align:center;
+
   position:relative;z-index:5;
+
   padding:5.5rem 1.5rem 6rem;
+
 }
+
  
+
 .etag{
+
   display:inline-flex;align-items:center;gap:9px;
+
   margin-bottom:1.6rem;
+
   opacity:0;animation:riseup .7s .7s forwards;
+
 }
+
 .etag-bar{width:22px;height:1px;background:linear-gradient(90deg,transparent,#60A5FA)}
+
 .etag-txt{font-size:.58rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:#60A5FA}
+
 .etag-sep{color:rgba(96,165,250,.25);font-size:.6rem}
+
 .etag-bar.flip{transform:scaleX(-1)}
+
  
+
 .htitle{margin-bottom:1.1rem;opacity:0;animation:riseup .8s .85s forwards}
+
 .htitle .pre{
+
   display:block;
+
   font-family:'DM Serif Display',serif;font-style:italic;
+
   font-size:clamp(.9rem,3.2vw,1.2rem);
+
   color:rgba(255,255,255,.28);margin-bottom:.3rem;
+
 }
+
 .htitle h1{
+
   font-family:'Bebas Neue',sans-serif;
+
   font-size:clamp(5rem,21vw,11rem);
+
   line-height:.87;letter-spacing:.04em;
+
   position:relative;display:inline-block;
+
 }
+
 .htitle h1 .w1{display:block;color:#fff}
+
 .htitle h1 .w2{
+
   display:block;
+
   background:linear-gradient(180deg,#FFFFFF 0%,#60A5FA 100%);
+
   -webkit-background-clip:text;
+
   -webkit-text-fill-color:transparent;
+
   filter:drop-shadow(0 8px 16px rgba(59,130,246,.25));
+
 }
+
 .htitle h1::before,.htitle h1::after{
+
   content:'';position:absolute;top:50%;
+
   width:clamp(20px,6vw,60px);height:1px;
+
   background:rgba(96,165,250,.25);
+
 }
+
 .htitle h1::before{right:calc(100% + 12px)}
+
 .htitle h1::after{left:calc(100% + 12px)}
+
  
+
 .hdesc{
+
   font-size:.875rem;color:rgba(255,255,255,.3);
+
   max-width:360px;line-height:1.8;
+
   margin:0 auto 2rem;
+
   opacity:0;animation:riseup .7s 1.05s forwards;
+
 }
+
  
+
 .hstats{
+
   display:flex;align-items:stretch;
+
   border:1px solid rgba(255,255,255,.08);
+
   border-radius:14px;overflow:hidden;
+
   background:rgba(255,255,255,.04);
+
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+
   position:relative;
+
   opacity:0;animation:riseup .7s 1.2s forwards;
+
   width:fit-content;
+
   max-width:min(360px,92vw);
+
 }
+
 .hstats::after{
+
   content:'';position:absolute;inset:0;border-radius:14px;
+
   background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.03) 50%,transparent 75%);
+
   background-size:300%;animation:shim 6s linear infinite;pointer-events:none;
+
 }
+
 @keyframes shim{from{background-position:300%}to{background-position:-300%}}
+
 .hsc{
-  padding:.65rem .3rem; /* Padding laterale ridotto per dare più spazio */
+
+  padding:.65rem .9rem;
+
   border-right:1px solid rgba(255,255,255,.06);
+
   text-align:center;transition:background .2s;
+
   flex:1;min-width:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center; /* Questo forza il centraggio perfetto sempre */
+
 }
+
 .hsc:last-child{border-right:none}
+
 .hsc:hover{background:rgba(29,78,216,.1)}
-.hscn{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(1.2rem, 4.5vw, 1.8rem); /* Il font si adatta allo schermo */
-  color:#fff;line-height:1;letter-spacing:.04em;
-  white-space:nowrap;
-}
+
 .hscn{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#fff;line-height:1;letter-spacing:.04em}
+
 .hscl{font-size:.48rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:3px;white-space:nowrap}
+
  
+
  
+
 .hscrl{
+
   position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+
   z-index:5;display:flex;flex-direction:column;align-items:center;gap:6px;
+
   cursor:pointer;opacity:0;animation:riseup .5s 1.5s forwards;
+
 }
+
 .hsm{width:20px;height:32px;border:1.5px solid rgba(255,255,255,.13);border-radius:10px;display:flex;justify-content:center;padding-top:5px}
+
 .hsw{width:2px;height:5px;background:rgba(255,255,255,.35);border-radius:1px;animation:swfall 2s ease-in-out infinite}
+
 .hsl{font-size:.5rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.18)}
+
 @keyframes swfall{0%{opacity:1;transform:translateY(0)}70%{opacity:0;transform:translateY(9px)}100%{opacity:0}}
+
  
+
 .hero::after{
+
   content:'';position:absolute;bottom:0;left:0;right:0;
+
   height:1px;z-index:6;
+
   background:linear-gradient(90deg,transparent,#1D4ED8 20%,#60A5FA 50%,#1D4ED8 80%,transparent);
+
   opacity:.6;
+
 }
+
  
+
 @keyframes riseup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
  
+
 /* ─────────────────────────────────────
+
    SEZIONE GIRONI
+
 ───────────────────────────────────── */
+
 .gironi{position:relative;z-index:1;background:#EEEAE2}
+
 .g-accent{
+
   height:3px;
+
   background:linear-gradient(90deg,#1A47B8,#3B82F6 50%,#1A47B8);
+
 }
+
 .g-wrap{max-width:920px;margin:0 auto;padding:0 1.5rem 4.5rem}
+
  
+
 .g-top{
+
   display:flex;align-items:center;gap:14px;
+
   padding:2.25rem 0 2rem;
+
   border-bottom:1px solid rgba(0,0,0,.08);
+
   margin-bottom:.2rem;
+
 }
+
 .g-dot{width:7px;height:7px;border-radius:50%;background:#1D4ED8;box-shadow:0 0 8px rgba(29,78,216,.5);flex-shrink:0}
+
 .g-lbl{font-size:.58rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#777}
+
 .g-hr{height:1px;flex:1;background:rgba(0,0,0,.07)}
+
 .g-cnt{font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#aaa}
+
  
+
 .g-list{display:flex;flex-direction:column}
+
 .g-row{
+
   display:grid;
+
   grid-template-columns:58px 1fr auto;
+
   align-items:center;
+
   gap:14px;
+
   padding:1.1rem .75rem;
+
   border-bottom:1px solid rgba(0,0,0,.055);
+
   text-decoration:none;color:#111;
+
   position:relative;
+
   border-radius:6px;margin:0 -.75rem;
+
   opacity:0;transform:translateY(10px);
+
   transition:opacity .42s,transform .42s,background .18s;
+
 }
+
 .g-row.vis{opacity:1;transform:translateY(0)}
+
 .g-row::before{
+
   content:'';position:absolute;left:0;
+
   top:50%;bottom:50%;
+
   width:3px;border-radius:0 2px 2px 0;
+
   background:#1D4ED8;
+
   transition:top .24s cubic-bezier(.4,0,.2,1),bottom .24s cubic-bezier(.4,0,.2,1);
+
 }
+
 .g-row.live:hover{background:rgba(29,78,216,.04)}
+
 .g-row.live:hover::before{top:0;bottom:0}
+
 .g-row.dead{pointer-events:none}
+
  
+
 .gL{
+
   font-family:'Bebas Neue',sans-serif;
+
   font-size:3.2rem;line-height:1;user-select:none;
+
   color:rgba(0,0,0,.07);
+
   transition:color .18s,transform .2s;
+
 }
+
 .g-row.live .gL{color:rgba(29,78,216,.13)}
+
 .g-row.live:hover .gL{color:rgba(29,78,216,.22);transform:scale(1.07) translateX(2px)}
+
 .g-row.dead .gL{color:rgba(0,0,0,.04)}
+
  
+
 .gTl{font-size:.53rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#aaa;margin-bottom:3px}
+
 .gTt{font-size:.9rem;font-weight:500;color:#1a1a1a;line-height:1.35}
+
 .g-row.dead .gTt{color:#bbb;font-style:italic;font-size:.82rem;font-weight:400}
+
  
+
 .gB{
+
   display:inline-flex;align-items:center;gap:6px;
+
   font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+
   color:#1D4ED8;
+
   background:rgba(29,78,216,.07);
+
   border:1px solid rgba(29,78,216,.18);
+
   border-radius:8px;padding:7px 13px;
+
   white-space:nowrap;transition:all .18s;text-decoration:none;
+
 }
+
 .gB svg{width:11px;height:11px;transition:transform .18s;flex-shrink:0}
+
 .g-row.live:hover .gB{background:#1D4ED8;color:#fff;border-color:#1D4ED8;box-shadow:0 4px 16px rgba(29,78,216,.35)}
+
 .g-row.live:hover .gB svg{transform:translateX(3px)}
+
 .gB.presto{color:#bbb;background:transparent;border-color:rgba(0,0,0,.08)}
+
  
+
 .gbadge{
+
   position:absolute;top:.65rem;right:.65rem;
+
   font-size:.45rem;font-weight:700;letter-spacing:.2em;
+
   text-transform:uppercase;
+
   background:#1D4ED8;color:#fff;
+
   border-radius:4px;padding:2px 6px;
+
   opacity:.85;
+
 }
+
  
+
 /* ─────────────────────────────────────
+
    FOOTER
+
 ───────────────────────────────────── */
+
 footer{
+
   position:relative;z-index:1;
+
   background:linear-gradient(170deg,#020816 0%,#061229 45%,#081640 100%);
+
   padding:2.75rem 1.75rem 2.5rem;
+
   text-align:center;overflow:hidden;
+
 }
+
 footer::before{
+
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
+
   background:linear-gradient(90deg,transparent 5%,#1D4ED8 35%,#60A5FA 50%,#1D4ED8 65%,transparent 95%);
+
   opacity:.45;
+
 }
+
 .ftc{font-size:.57rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.18);margin-bottom:.9rem}
+
 .ftn{font-family:Palatino,'Palatino Linotype',Georgia,serif;font-size:.92rem;font-style:italic;color:rgba(255,255,255,.4);line-height:1.9}
+
 /* Blocco autore */
+
 /* ── Social links ── */
+
 .ft-socials{
+
   display:flex;align-items:center;justify-content:center;gap:10px;
+
   margin-top:1.6rem;flex-wrap:wrap;
+
 }
+
 .ft-social{
+
   display:inline-flex;align-items:center;gap:6px;
+
   font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+
   color:rgba(255,255,255,.28);
+
   border:1px solid rgba(255,255,255,.08);
+
   border-radius:8px;padding:8px 13px;
+
   text-decoration:none;transition:all .2s;
+
 }
+
 .ft-social svg{width:13px;height:13px;flex-shrink:0}
+
 .ft-social:hover{color:#fff;border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.05)}
+
 .ft-social.yt:hover{color:#FF0000;border-color:rgba(255,0,0,.3);background:rgba(255,0,0,.05)}
+
 .ft-social.ig:hover{color:#E1306C;border-color:rgba(225,48,108,.3);background:rgba(225,48,108,.05)}
+
 .ft-social.li:hover{color:#0A66C2;border-color:rgba(10,102,194,.3);background:rgba(10,102,194,.05)}
+
 .ft-social.gh:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.07)}
+
 .ft-divider{width:1px;height:18px;background:rgba(255,255,255,.07);flex-shrink:0}
+
  
+
 /* ── Footer share ── */
+
 .ft-share{margin-top:1.5rem}
+
 .ft-share-btn{
+
   display:inline-flex;align-items:center;gap:7px;
+
   font-size:.55rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+
   color:rgba(255,255,255,.25);
+
   background:transparent;
+
   border:1px solid rgba(255,255,255,.08);
+
   border-radius:8px;padding:8px 16px;
+
   cursor:pointer;transition:all .2s;
+
   font-family:'Inter',sans-serif;
+
 }
+
 .ft-share-btn svg{width:11px;height:11px}
+
 .ft-share-btn:hover{color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2)}
+
 .ft-share-btn.copied{color:#60A5FA;border-color:rgba(96,165,250,.3)}
+
  
+
 /* ─────────────────────────────────────
+
    DESKTOP
+
 ───────────────────────────────────── */
+
 @media(min-width:768px){
+
   .hsc{padding:1rem 1.8rem}
+
   .hscn{font-size:2.1rem}
+
   .g-wrap{padding:0 2.5rem 5rem}
+
   .g-row{grid-template-columns:74px 1fr auto;gap:20px;padding:1.3rem .875rem;margin:0 -.875rem}
+
   .gL{font-size:3.7rem}
+
   .g-top{padding:2.5rem 0 2.25rem}
+
 }
+
 @media(min-width:1024px){
+
   .hstats{min-width:520px}
+
 }
+
 </style>
+
 </head>
+
 <body>
+
  
+
 <!-- LOADER -->
+
 <div id="loader">
+
   <div class="ld-word">Caricamento</div>
+
   <div class="ld-bar"></div>
+
 </div>
+
  
+
 <canvas id="bg"></canvas>
+
  
+
 <!-- ══════════ HERO ══════════ -->
+
 <section class="hero">
+
  
+
   <div class="hgrid"></div>
+
   <div class="rings"><div class="rg"></div><div class="rg"></div><div class="rg"></div></div>
+
   <div class="hglow"></div>
+
   <div class="bgyear" aria-hidden="true">26</div>
+
   <div class="hbars t"><div class="hb"></div><div class="hb"></div><div class="hb"></div></div>
+
   <div class="hbars b"><div class="hb"></div><div class="hb"></div><div class="hb"></div></div>
+
  
+
   <div class="firma">
+
     <small>A cura del Team di</small>
+
     <em>Lorenzo Zanotti</em>
+
  
+
   </div>
+
  
+
   <div class="hcenter">
+
  
+
     <div class="etag">
+
       <div class="etag-bar"></div>
+
       <span class="etag-txt">FIFA World Cup 2026</span>
+
       <span class="etag-sep">·</span>
+
       <span class="etag-txt">Report Tattico</span>
+
       <div class="etag-bar flip"></div>
+
     </div>
+
  
+
     <div class="htitle">
+
       <span class="pre">48 nazionali. 12 gironi. Un'analisi per ognuno.</span>
+
       <h1><span class="w1">MONDIALI</span><span class="w2" id="yr">2026</span></h1>
+
     </div>
+
  
+
     <p class="hdesc">Moduli, uomini chiave e tendenze tattiche di ogni squadra qualificata — tutto quello che serve per capire il mondiale prima che inizi.</p>
+
  
+
     <div class="hstats" id="hstats">
+
       <div class="hsc"><div class="hscn" data-t="48">0</div><div class="hscl">Nazioni</div></div>
+
       <div class="hsc"><div class="hscn" data-t="12">0</div><div class="hscl">Gironi</div></div>
+
       <div class="hsc"><div class="hscn" data-t="104">0</div><div class="hscl">Partite</div></div>
+
       <div class="hsc"><div class="hscn">GIU</div><div class="hscl">Kick-off 2026</div></div>
+
     </div>
+
  
+
  
+
   </div>
+
  
+
   <div class="hscrl" onclick="document.querySelector('.gironi').scrollIntoView({behavior:'smooth'})">
+
     <div class="hsm"><div class="hsw"></div></div>
+
     <span class="hsl">Scorri</span>
+
   </div>
+
  
+
 </section>
+
  <!-- ══════════ GIRONI ══════════ -->
+
 <section class="gironi">
+
   <div class="g-accent"></div>
+
   <div class="g-wrap">
+
     <div class="g-top">
+
       <div class="g-dot"></div>
+
       <span class="g-lbl">Fase a gironi</span>
+
       <div class="g-hr"></div>
+
       <!-- Contatore aggiornato -->
+
       <span class="g-cnt">1 di 12 disponibili</span>
+
     </div>
+
     <div class="g-list">
+
  
+
       <a href="gruppo_a.html" class="g-row live">
+
         <div class="gbadge">Disponibile</div>
+
         <div class="gL" aria-hidden="true">A</div>
+
         <div class="gT"><div class="gTl">Gruppo A</div><div class="gTt">Messico · Sudafrica · Corea del Sud · Cechia</div></div>
+
         <div class="gB">Leggi<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+
       </a>
+
  
+
       <!-- Gruppo B disattivato -->
+
       <div class="g-row dead"><div class="gL">B</div><div class="gT"><div class="gTl">Gruppo B</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">C</div><div class="gT"><div class="gTl">Gruppo C</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">D</div><div class="gT"><div class="gTl">Gruppo D</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">E</div><div class="gT"><div class="gTl">Gruppo E</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">F</div><div class="gT"><div class="gTl">Gruppo F</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">G</div><div class="gT"><div class="gTl">Gruppo G</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">H</div><div class="gT"><div class="gTl">Gruppo H</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">I</div><div class="gT"><div class="gTl">Gruppo I</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">J</div><div class="gT"><div class="gTl">Gruppo J</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">K</div><div class="gT"><div class="gTl">Gruppo K</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
       <div class="g-row dead"><div class="gL">L</div><div class="gT"><div class="gTl">Gruppo L</div><div class="gTt">Report in elaborazione...</div></div><div class="gB presto">In arrivo</div></div>
+
  
+
     </div>
+
   </div>
+
 </section>
+
  
+
 <!-- FOOTER -->
+
 <footer>
+
   <div class="ftc">In collaborazione con</div>
+
   <div class="ftn">Andrea Marinozzi · Lorenzo Triolo · Luca Rossini · Tommaso Arone</div>
+
  
+
   <div class="ft-socials">
+
     <a href="https://www.instagram.com/lorenzo.zanottii/" target="_blank" rel="noopener" class="ft-social ig" aria-label="Instagram di Lorenzo Zanotti">
+
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+
       Instagram
+
     </a>
+
     <a href="https://www.linkedin.com/in/lorenzo-zanotti-774595328" target="_blank" rel="noopener" class="ft-social li" aria-label="LinkedIn di Lorenzo Zanotti">
+
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+
       LinkedIn
+
     </a>
+
     <a href="https://github.com/lorenzozanotti" target="_blank" rel="noopener" class="ft-social gh" aria-label="GitHub di Lorenzo Zanotti">
+
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+
       GitHub
+
     </a>
+
     <div class="ft-divider"></div>
+
     <a href="https://www.youtube.com/@AndreaMarinozziYT" target="_blank" rel="noopener" class="ft-social yt" aria-label="YouTube di Andrea Marinozzi">
+
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+
       Andrea Marinozzi
+
     </a>
+
   </div>
+
  
+
   <div class="ft-share">
+
     <button class="ft-share-btn" id="footerShareBtn" aria-label="Condividi">
+
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
         <circle cx="12" cy="3" r="1.5"/><circle cx="4" cy="8" r="1.5"/><circle cx="12" cy="13" r="1.5"/>
+
         <line x1="5.5" y1="7" x2="10.5" y2="4.2"/><line x1="5.5" y1="9" x2="10.5" y2="11.8"/>
+
       </svg>
+
       Condividi
+
     </button>
+
   </div>
+
 </footer>
+
  
+
 <script>
+
 /* ── LOADER ── */
+
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('out'),1200));
+
  
+
 /* ── CANVAS: orbs + meteore + particelle ── */
+
 (()=>{
+
   const cv=document.getElementById('bg'),ctx=cv.getContext('2d');
+
   let W,H;
+
   const rsz=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight};
+
   rsz();window.addEventListener('resize',rsz);
+
  
+
   const orbs=[
+
     {x:.15,y:.25,rx:.30,ry:.26,vx:.00013,vy:.00009,r:29,g:78,b:216,a:.18},
+
     {x:.85,y:.60,rx:.24,ry:.20,vx:-.00011,vy:.00010,r:29,g:78,b:216,a:.12},
+
     {x:.50,y:.08,rx:.18,ry:.15,vx:.00008,vy:.00014,r:29,g:78,b:216,a:.09},
+
     {x:.08,y:.78,rx:.16,ry:.14,vx:.00017,vy:-.00009,r:96,g:165,b:250,a:.10},
+
     {x:.92,y:.18,rx:.13,ry:.11,vx:-.00014,vy:.00012,r:96,g:165,b:250,a:.08},
+
     {x:.62,y:.88,rx:.20,ry:.16,vx:-.00009,vy:-.00008,r:29,g:78,b:216,a:.11},
+
   ];
+
  
+
   const pts=Array.from({length:55},()=>({
+
     x:Math.random(),y:Math.random(),
+
     vx:(Math.random()-.5)*.00012,vy:(Math.random()-.5)*.00012,
+
     r:Math.random()*1.2+.3,
+
     a:Math.random()*.38+.05,
+
     blue:Math.random()>.4,
+
   }));
+
  
+
   const meteors=[];
+
   const addMeteor=()=>meteors.push({
+
     x:Math.random()*W*1.4,y:-15,
+
     vx:-(Math.random()*2.5+1.8),vy:(Math.random()*1.8+1.3),
+
     len:Math.random()*90+50,
+
     a:Math.random()*.45+.25,life:1,
+
   });
+
   setInterval(addMeteor,1600);addMeteor();addMeteor();
+
  
+
   let mx=.5,my=.5;
+
   window.addEventListener('mousemove',e=>{mx=e.clientX/W;my=e.clientY/H});
+
  
+
   if(window.DeviceOrientationEvent){
+
     window.addEventListener('deviceorientation',e=>{
+
       if(e.gamma!==null){mx=Math.max(0,Math.min(1,(.5+e.gamma/40)));my=Math.max(0,Math.min(1,(.5+(e.beta-30)/60)))}
+
     });
+
   }
+
  
+
   const draw=()=>{
+
     ctx.clearRect(0,0,W,H);
+
     orbs.forEach(o=>{
+
       o.x+=o.vx+(mx-.5)*.00005;o.y+=o.vy+(my-.5)*.00004;
+
       if(o.x<-.4)o.x=1.4;if(o.x>1.4)o.x=-.4;
+
       if(o.y<-.4)o.y=1.4;if(o.y>1.4)o.y=-.4;
+
       ctx.save();
+
       ctx.translate(o.x*W,o.y*H);ctx.scale(1,o.ry/o.rx);ctx.translate(-o.x*W,-o.y*H);
+
       const g=ctx.createRadialGradient(o.x*W,o.y*H,0,o.x*W,o.y*H,o.rx*W);
+
       g.addColorStop(0,`rgba(${o.r},${o.g},${o.b},${o.a})`);
+
       g.addColorStop(1,`rgba(${o.r},${o.g},${o.b},0)`);
+
       ctx.fillStyle=g;ctx.beginPath();ctx.arc(o.x*W,o.y*H,o.rx*W,0,Math.PI*2);ctx.fill();
+
       ctx.restore();
+
     });
+
     for(let i=meteors.length-1;i>=0;i--){
+
       const m=meteors[i];m.x+=m.vx;m.y+=m.vy;m.life-=.011;
+
       if(m.life<=0||m.y>H+30){meteors.splice(i,1);continue}
+
       const d=Math.hypot(m.vx,m.vy);
+
       const g=ctx.createLinearGradient(m.x,m.y,m.x-m.vx/d*m.len,m.y-m.vy/d*m.len);
+
       g.addColorStop(0,`rgba(255,255,255,${m.a*m.life})`);
+
       g.addColorStop(.35,`rgba(96,165,250,${m.a*m.life*.5})`);
+
       g.addColorStop(1,'rgba(0,0,0,0)');
+
       ctx.strokeStyle=g;ctx.lineWidth=1.1;
+
       ctx.beginPath();ctx.moveTo(m.x,m.y);ctx.lineTo(m.x-m.vx/d*m.len,m.y-m.vy/d*m.len);ctx.stroke();
+
       ctx.beginPath();ctx.arc(m.x,m.y,1.4,0,Math.PI*2);
+
       ctx.fillStyle=`rgba(255,255,255,${m.a*m.life*.7})`;ctx.fill();
+
     }
+
     for(let i=0;i<pts.length;i++){
+
       for(let j=i+1;j<pts.length;j++){
+
         const dx=(pts[i].x-pts[j].x)*W,dy=(pts[i].y-pts[j].y)*H,d=Math.hypot(dx,dy);
+
         if(d<105){ctx.beginPath();ctx.strokeStyle=`rgba(96,165,250,${(1-d/105)*.042})`;ctx.lineWidth=.5;ctx.moveTo(pts[i].x*W,pts[i].y*H);ctx.lineTo(pts[j].x*W,pts[j].y*H);ctx.stroke()}
+
       }
+
     }
+
     pts.forEach(p=>{
+
       p.x+=p.vx;p.y+=p.vy;
+
       if(p.x<0)p.x=1;if(p.x>1)p.x=0;if(p.y<0)p.y=1;if(p.y>1)p.y=0;
+
       ctx.beginPath();ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2);
+
       ctx.fillStyle=p.blue?`rgba(96,165,250,${p.a})`:`rgba(29,78,216,${p.a*.7})`;ctx.fill();
+
     });
+
     requestAnimationFrame(draw);
+
   };draw();
+
 })();
+
  
+
 /* ── GLITCH ── */
+
 (()=>{
+
   const el=document.getElementById('yr');
+
   const orig='2026',ch='0123456789';
+
   setTimeout(()=>{
+
     let s=0,max=20;
+
     const id=setInterval(()=>{
+
       if(s>=max){el.textContent=orig;clearInterval(id);return}
+
       el.textContent=orig.split('').map((c,i)=>s<max-i*4?ch[Math.floor(Math.random()*10)]:c).join('');
+
       s++;
+
     },50);
+
   },1250);
+
 })();
+
  
+
 /* ── COUNTER ── */
+
 (()=>{
+
   let done=false;
+
   new IntersectionObserver(e=>{
+
     if(e[0].isIntersecting&&!done){done=true;
+
       document.querySelectorAll('.hscn[data-t]').forEach(el=>{
+
         const t=+el.dataset.t;let v=0;const s=Math.max(1,Math.ceil(t/28));
+
         const id=setInterval(()=>{v=Math.min(v+s,t);el.textContent=v;if(v>=t)clearInterval(id)},40);
+
       });
+
     }
+
   },{threshold:.5}).observe(document.getElementById('hstats'));
+
 })();
+
  
+
 /* ── REVEAL righe ── */
+
 (()=>{
+
   const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.06,rootMargin:'0px 0px -15px 0px'});
+
   document.querySelectorAll('.g-row').forEach((r,i)=>{r.style.transitionDelay=`${i*.038}s`;io.observe(r)});
+
 })();
+
  
+
 /* ── SHARE ── */
+
 function doShare(btnEl) {
+
   const url = 'https://lorenzozanotti.github.io/mondiale_2026/';
+
  
+
   if (navigator.share) {
+
     // Passando solo l'URL, evitiamo che il testo sporchi il messaggio.
+
     // Le app genereranno l'anteprima in automatico grazie ai meta tag.
+
     navigator.share({ url: url }).catch(() => {});
+
   } else {
+
     // Su PC copia solo il link negli appunti
+
     navigator.clipboard.writeText(url).then(() => {
+
       btnEl.classList.add('copied');
+
       const orig = btnEl.innerHTML;
+
       btnEl.innerHTML = btnEl.innerHTML.replace(/Condividi[^<]*/,'Link copiato!');
+
       setTimeout(() => { btnEl.classList.remove('copied'); btnEl.innerHTML = orig; }, 2000);
+
     });
+
   }
+
 }
+
  
+
 document.getElementById('footerShareBtn').addEventListener('click', function(){ doShare(this) });
+
 </script>
+
 </body>
+
 </html>
