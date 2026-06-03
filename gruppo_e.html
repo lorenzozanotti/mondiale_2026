@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gruppo E — Mondiali 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F7FB;--card:#FFF;--border:#E5E7EB;
+  --text:#111827;--text2:#6B7280;--text3:#9CA3AF;
+  --blue:#2563EB;--red:#DC2626;--green:#059669;--gold:#D97706;--dark:#0F172A;
+  --font:'Inter',system-ui,sans-serif;--r:12px;--rl:20px;
+  --sh:0 4px 16px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04);
+  --sh-hover:0 12px 32px rgba(0,0,0,.10),0 2px 8px rgba(0,0,0,.06);
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0F172A;--card:#1E293B;--border:rgba(255,255,255,.08);
+  --text:#F1F5F9;--text2:#94A3B8;--text3:#475569;
+  --sh:0 4px 16px rgba(0,0,0,.3);--sh-hover:0 12px 32px rgba(0,0,0,.4);
+}}
+body{font-family:var(--font);background:var(--bg);color:var(--text);padding:2rem 1.25rem;max-width:960px;margin:0 auto;-webkit-font-smoothing:antialiased}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0F172A 0%,#1E3A8A 60%,#1D4ED8 100%);border-radius:24px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 10px 40px rgba(37,99,235,.25);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);border-radius:50%}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px}
+.hero h1{font-size:38px;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.1}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);margin-top:10px}
+.hero-teams{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}
+.hero-pill{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.10);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:5px 12px 5px 6px;font-size:13px;font-weight:500;color:#fff}
+.hero-pill img{width:22px;height:16px;object-fit:cover;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+
+/* KPI */
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:2rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem;box-shadow:var(--sh);position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--rl) var(--rl) 0 0}
+.kpi-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.kpi-value{font-size:18px;font-weight:700;}
+.kpi-team{font-size:12px;color:var(--text2);margin-top:3px;font-weight:500;display:flex;align-items:center;gap:4px}
+
+/* TABS */
+.tabs-wrap{background:var(--card);padding:5px;border-radius:16px;display:inline-flex;gap:4px;box-shadow:var(--sh);margin-bottom:1.75rem;flex-wrap:wrap}
+.tab{padding:9px 20px;border-radius:12px;font-size:13px;font-weight:500;font-family:var(--font);border:none;background:transparent;color:var(--text2);cursor:pointer;transition:all .2s}
+.tab:hover{background:var(--bg);color:var(--text)}
+.tab.active{background:var(--dark);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+
+.sec{display:none}.sec.on{display:block}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+
+/* TEAM CARD */
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;box-shadow:var(--sh);transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;cursor:pointer}
+.tcard:hover{transform:translateY(-4px);box-shadow:var(--sh-hover)}
+.tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--rl) var(--rl) 0 0}
+.card-hdr{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem}
+.flag-wrap{width:52px;height:52px;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12);flex-shrink:0}
+.flag-wrap img{width:100%;height:100%;object-fit:cover}
+.flag-fb{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0}
+.tname{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.tsub{font-size:12px;color:var(--text2);margin-top:2px;font-weight:500}
+.click-hint{font-size:11px;color:var(--text3);margin-top:8px;font-style:italic}
+
+.brow{padding:6px 0}
+.blbl{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500}
+.blbl span:last-child{font-weight:600;color:var(--text)}
+.btrk{height:5px;background:var(--bg);border-radius:4px;overflow:hidden}
+.bfll{height:100%;border-radius:4px;animation:growBar 1s cubic-bezier(.4,0,.2,1) both}
+@keyframes growBar{from{width:0 !important}}
+.divider{height:1px;background:var(--border);margin:12px 0}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid var(--border)}
+.srow:last-child{border-bottom:none}
+.slbl{color:var(--text2)}.sval{font-weight:600}
+.nodata-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(217,119,6,.10);color:#B45309;border-radius:100px;font-size:12px;font-weight:600;margin-bottom:12px}
+.nodata-text{font-size:13px;color:var(--text2);line-height:1.65}
+
+/* RADAR */
+.rcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;box-shadow:var(--sh);text-align:center;transition:transform .25s,box-shadow .25s}
+.rcard:hover{transform:translateY(-3px);box-shadow:var(--sh-hover)}
+.rname{font-size:15px;font-weight:700;margin-bottom:2px}
+.rsub{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:14px}
+
+/* COMPARE */
+.cmp-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.75rem;box-shadow:var(--sh)}
+.ctrls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.ctrls label{font-size:13px;font-weight:600;color:var(--text2)}
+.ctrls select{flex:1;min-width:140px;padding:8px 12px;border-radius:var(--r);font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:var(--font);cursor:pointer}
+.legend{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.li{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--text2)}
+.ldot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* RANKING */
+.rkcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;box-shadow:var(--sh)}
+.rktitle{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.ritem{display:flex;align-items:center;gap:10px;padding:6px 0}
+.rnum{font-size:12px;font-weight:700;color:var(--text3);min-width:18px}
+.rname2{font-size:13px;font-weight:500;min-width:100px}
+.rtrk{flex:1;height:6px;background:var(--bg);border-radius:4px;overflow:hidden}
+.rfll{height:100%;border-radius:4px;animation:growBar 1s cubic-bezier(.4,0,.2,1) both}
+.rval{font-size:13px;font-weight:700;min-width:52px;text-align:right}
+.rnd{font-size:11px;color:var(--text3);margin-top:8px}
+
+/* ── MODAL WINDOW ────────────────────────────────────────────── */
+.overlay{position:fixed;inset:0;background:rgba(15, 23, 42, 0.65);backdrop-filter:blur(6px);z-index:100;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.open{opacity:1;pointer-events:all}
+
+.drawer{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -48%) scale(0.96);
+  opacity:0;
+  pointer-events:none;
+  width:min(900px, 92vw);
+  max-height:92vh;
+  background:var(--card);
+  box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);
+  z-index:101;
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  border-radius:24px;
+}
+.drawer.open{
+  transform:translate(-50%, -50%) scale(1);
+  opacity:1;
+  pointer-events:auto;
+}
+
+.drawer-hero{padding:2.5rem 2.5rem 1.5rem;position:relative;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
+.drawer-close{position:absolute;top:1.5rem;right:1.5rem;width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text2);transition:all .15s}
+.drawer-close:hover{background:var(--border);color:var(--text)}
+.drawer-flag{width:80px;height:56px;object-fit:cover;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.15);margin-bottom:16px}
+.drawer-title{font-size:32px;font-weight:800;letter-spacing:-.02em}
+.drawer-subtitle{font-size:15px;color:var(--text2);margin-top:6px;font-weight:500;}
+
+.drawer-body{padding:0 2.5rem 2.5rem;flex:1}
+
+.modal-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+@media(min-width: 768px) { .modal-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; } }
+
+.drawer-section{margin-bottom:1.75rem}
+.drawer-section:last-child{margin-bottom:0}
+.ds-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--text3);margin-bottom:12px;border-bottom:1px solid var(--bg);padding-bottom:8px;}
+
+.ct-card{display:flex;align-items:flex-start;gap:12px;background:var(--bg);border-radius:14px;padding:14px 16px;border:1px solid var(--border)}
+.ct-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ct-name{font-size:15px;font-weight:700}
+.ct-note{font-size:13px;color:var(--text2);line-height:1.55;margin-top:4px}
+
+.tactical-board {
+  position: relative; width: 100%; aspect-ratio: 4/5; background: #3d7a44;
+  border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; margin-top: 10px; overflow: hidden;
+  background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 20% 20%; box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+}
+.pitch-line { position: absolute; border: 1.5px solid rgba(255,255,255,0.3); }
+.area-top { top: -2px; left: 20%; width: 60%; height: 18%; border-top: none; }
+.area-bot { bottom: -2px; left: 20%; width: 60%; height: 18%; border-bottom: none; }
+.mid-line { top: 50%; width: 100%; border-left:none; border-right:none; border-bottom:none; }
+.center-circle { top: 40%; left: 30%; width: 40%; height: 20%; border-radius: 50%; }
+
+.player-pin {
+  position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 10;
+}
+.pin-circle {
+  width: 24px; height: 24px; background: #fff; color: #000;
+  border-radius: 50%; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4); border: 2px solid var(--blue);
+}
+.pin-name {
+  font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  margin-top: 3px; white-space: nowrap; background: rgba(0,0,0,0.4); padding: 2px 5px; border-radius: 4px;
+}
+
+.player-list{display:flex;flex-direction:column;gap:8px}
+.player-item{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:12px;padding:12px 14px; border:1px solid var(--border)}
+.player-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.player-name{font-size:14px;font-weight:600}
+.player-meta{font-size:12px;color:var(--text2);margin-top:2px}
+.player-desc{font-size:12.5px;color:var(--text);margin-top:6px;line-height:1.45;font-style:italic}
+.player-role{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;color:#fff;margin-left:auto;flex-shrink:0;background:#64748b}
+
+.curiosita-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.curiosita-list li{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--text);line-height:1.55;background:var(--bg);border-radius:12px;padding:12px 16px;border:1px solid var(--border)}
+.curiosita-list li::before{content:'💡';flex-shrink:0;font-size:16px}
+canvas{display:block}
+.firma {
+  position: absolute;
+  top: 1.75rem;
+  right: 2rem;
+  text-align: right;
+  z-index: 10;
+}
+.firma-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.40);
+  margin-bottom: 2px;
+}
+.firma-name {
+  font-family: Palatino, 'Palatino Linotype', Georgia, serif;
+  font-size: 19px;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(255,255,255,.92);
+  letter-spacing: .02em;
+  line-height: 1.2;
+}
+.firma-sub {
+  font-family: Palatino, 'Palatino Linotype', Georgia, serif;
+  font-size: 9px;
+  font-style: italic;
+  color: rgba(255,255,255,.38);
+  margin-top: 1px;
+  letter-spacing: .08em;
+}
+.team-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+
+.footer-names {
+  font-family: Palatino, 'Palatino Linotype', Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text);
+}
+</style>
+</style>
+</head>
+<body>
+
+<div class="hero">
+<div class="firma">
+  <div class="firma-label">A cura del Team di</div>
+  <div class="firma-name">Lorenzo Zanotti</div>
+</div>
+  <div class="hero-label">FIFA World Cup 2026 &nbsp;·&nbsp; Analisi Tattica</div>
+  <h1>Gruppo E</h1>
+  <div class="hero-sub">Profili basati sulle Qualificazioni</div>
+  <div class="hero-teams" id="hero-teams"></div>
+</div>
+<div class="kpi-strip" id="kpi-strip"></div>
+<div class="tabs-wrap">
+  <button class="tab active" onclick="show('overview',this)">Panoramica</button>
+  <button class="tab" onclick="show('radar',this)">Radar</button>
+  <button class="tab" onclick="show('compare',this)">Confronto</button>
+  <button class="tab" onclick="show('ranking',this)">Ranking</button>
+</div>
+<div id="overview" class="sec on"><div class="g2" id="ov-grid"></div></div>
+<div id="radar"    class="sec"><div class="g3" id="rd-grid"></div></div>
+<div id="compare"  class="sec">
+  <div class="cmp-card">
+    <div class="ctrls">
+      <label>Squadra A</label><select id="sel-a" onchange="drawCmp()"></select>
+      <label>vs</label><select id="sel-b" onchange="drawCmp()"></select>
+    </div>
+    <div class="legend" id="cmp-leg"></div>
+    <div style="position:relative;height:500px"><canvas id="cmp-canvas"></canvas></div>
+  </div>
+</div>
+<div id="ranking" class="sec"><div class="g2" id="rk-grid"></div></div>
+
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-hero" id="drawer-hero"></div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<div class="team-footer">
+  <div class="footer-label">In collaborazione con</div>
+  <div class="footer-names">
+    Andrea Marinozzi, Lorenzo Triolo, Luca Rossini, Tommaso Arone
+  </div>
+</div>
+<script>
+const TEAMS = [
+  {
+    "name": "Germania", 
+    "color": "#000000", 
+    "colorLight": "rgba(0,0,0,0.12)", 
+    "hasData": true, 
+    "matches": 6, 
+    "stats": {"possession_pct": 73.17, "ppda": 7.77, "pass_accuracy": 89.3, "shot_accuracy": 37.1, "touches_opp_box": 36.17, "big_chance_conv": 46.83, "duels_won_pct": 46.67, "final_third_entries": 69.17, "shots_total": 17.17, "opp_shots_total": 6.17, "big_chances_created": 4.17, "shots_on_target": 6.4}
+  },
+  {
+    "name": "Ecuador", 
+    "color": "#052B5C", 
+    "colorLight": "rgba(5,43,92,0.12)", 
+    "hasData": true, 
+    "matches": 18, 
+    "stats": {"possession_pct": 52.39, "ppda": 10.6, "pass_accuracy": 83.03, "shot_accuracy": 34.66, "touches_opp_box": 16.83, "big_chance_conv": 56.43, "duels_won_pct": 48.5, "final_third_entries": 53.39, "shots_total": 10.67, "opp_shots_total": 9.44, "big_chances_created": 1.87, "shots_on_target": 3.7}
+  },
+  {
+    "name": "Costa d'Avorio", 
+    "color": "#F97316", 
+    "colorLight": "rgba(249,115,22,0.12)", 
+    "hasData": true, 
+    "matches": 5, 
+    "stats": {"possession_pct": 60.2, "ppda": 8.5, "pass_accuracy": 89.4, "shot_accuracy": 24.5, "touches_opp_box": 28.8, "big_chance_conv": 39.4, "duels_won_pct": 50.4, "final_third_entries": 53.0, "shots_total": 16.6, "opp_shots_total": 7.8, "big_chances_created": 3.2, "shots_on_target": 4.0}
+  },
+  {
+    "name": "Curaçao", 
+    "color": "#2563EB", 
+    "colorLight": "rgba(37,99,235,0.12)", 
+    "hasData": true, 
+    "matches": 10, 
+    "stats": {"possession_pct": 56.3, "ppda": 9.44, "pass_accuracy": 79.68, "shot_accuracy": 40.68, "touches_opp_box": 37.33, "big_chance_conv": 46.1, "duels_won_pct": 50.6, "final_third_entries": 59.6, "shots_total": 16.3, "opp_shots_total": 10.9, "big_chances_created": 3.2, "shots_on_target": 6.6}
+  }
+];
+
+const RADAR_DIMS = [
+  ["possession_pct", "Possesso", 74.38, false], 
+  ["ppda", "PPDA", 6.23, true],
+  ["pass_accuracy", "Pass acc.", 92.02, false], 
+  ["shot_accuracy", "Shot acc.", 50.37, false], 
+  ["touches_opp_box", "Tocchi area", 61.25, false], 
+  ["big_chance_conv", "Cinismo", 78.57, false], 
+  ["duels_won_pct", "Contrasti", 55.62, false], 
+  ["final_third_entries", "Terzo fin.", 95.25, false]
+];
+
+const RANKING_METRICS = [
+  ["possession_pct", "Possesso", "%", false, 74.38], 
+  ["shots_total", "Tiri a partita", "", false, 25.0], 
+  ["ppda", "PPDA", "", true, 15.96], 
+  ["pass_accuracy", "Precisione passaggi", "%", false, 92.02], 
+  ["shot_accuracy", "Precisione tiri", "%", false, 50.37], 
+  ["touches_opp_box", "Tocchi area avversaria", "", false, 61.25], 
+  ["opp_shots_total", "Tiri subiti", "", true, 15.83], 
+  ["duels_won_pct", "Contrasti vinti", "%", false, 55.62], 
+  ["big_chances_created", "Big chances create", "", false, 7.5], 
+  ["shots_on_target", "Tiri in porta", "", false, 9.67]
+];
+
+const FLAG_CODES = {"Algeria": "dz", "Arabia Saudita": "sa", "Argentina": "ar", "Australia": "au", "Austria": "at", "Belgio": "be", "Bosnia ed Erzegovina": "ba", "Brasile": "br", "Capo Verde": "cv", "Cechia": "cz", "Colombia": "co", "Corea del Sud": "kr", "Costa d'Avorio": "ci", "Croazia": "hr", "Curacao": "cw", "Curaçao": "cw", "Ecuador": "ec", "Egitto": "eg", "Francia": "fr", "Germania": "de", "Ghana": "gh", "Giappone": "jp", "Giordania": "jo", "Haiti": "ht", "Inghilterra": "gb-eng", "Iran": "ir", "Iraq": "iq", "Marocco": "ma", "Messico": "mx", "Norvegia": "no", "Nuova Zelanda": "nz", "Olanda": "nl", "Panama": "pa", "Paraguay": "py", "Portogallo": "pt", "Qatar": "qa", "RD del Congo": "cd", "Scozia": "gb-sct", "Senegal": "sn", "Spagna": "es", "Sudafrica": "za", "Svezia": "se", "Svizzera": "ch", "Tunisia": "tn", "Turchia": "tr", "Uruguay": "uy", "USA": "us", "Uzbekistan": "uz", "Canada": "ca"};
+
+const PROFILES = {
+"Germania": {
+    "rank": "#10",
+    "ct": "Julian Nagelsmann", 
+    "ct_note": "Diventato il più giovane tecnico della storia della Bundesliga a 28 anni ed è noto per il suo calcio dinamico, il pressing alto e la grande flessibilità tattica. Dopo le esperienze con TSG Hoffenheim, RB Leipzig e Bayern Monaco, ha iniziato la ricostruzione della Germania puntando su giovani talenti.", 
+    "convocati": "<b>Portieri:</b> M. Neuer, O. Baumann, A. Nübel.<br><b>Difensori:</b> W. Anton, N. Brown, J. Kimmich, D. Raum, A. Rüdiger, M. Thiaw, N. Schlotterbeck, J. Tah.<br><b>Centrocampisti:</b> L. Goretzka, F. Nmecha, A. Stiller, A. Pavlović, J. Musiala, N. Amiri, F. Wirtz, P. Groß.<br><b>Attaccanti:</b> J. Leweling, L. Karl, K. Havertz, L. Sané, D. Undav, M. Beier, N. Woltemade.",
+    "modulo": "4-2-3-1",
+    "campo": "La Germania di Nagelsmann gioca un calcio di controllo e pressione alta, con un 4-2-3-1 che in possesso diventa spesso un 2-3-5. La squadra cerca di dominare il campo attraverso il possesso e l’occupazione degli half-spaces, dove Musiala e Wirtz sono i principali creatori di superiorità tra le linee. La manovra è pulita e structured, con Kimmich che alterna regia bassa e costruzione avanzata. In fase difensiva il gegenpressing è immediato e molto aggressivo, con linea alta e recupero rapido del pallone, anche se questo espone la squadra alle transizioni.",
+    "formazione": [{"n":1,"nome":"Neuer","pos":"GK"},{"n":6,"nome":"Kimmich","pos":"DD"},{"n":2,"nome":"Tah","pos":"DC_R"},{"n":4,"nome":"Schlotterbeck","pos":"DC_L"},{"n":3,"nome":"Raum","pos":"DS"},{"n":8,"nome":"Goretzka","pos":"MED_R"},{"n":16,"nome":"Pavlović","pos":"MED_L"},{"n":10,"nome":"Musiala","pos":"TRQ_L"},{"n":17,"nome":"Wirtz","pos":"TRQ_C"},{"n":19,"nome":"Sané","pos":"TRQ_R"},{"n":9,"nome":"Havertz","pos":"ATT"}],
+    "giocatori": [
+        {
+            "nome": "Florian Wirtz", 
+            "ruolo": "TREQUARTISTA", 
+            "club": "Liverpool", 
+            "desc": "Acquistato dal Liverpool per ~135 milioni di euro — record assoluto per un calciatore tedesco. Ha segnato il primo gol dell'EURO 2024 dopo appena 10', e il pari contro la Spagna al 90'. Prima stagione in Premier: 6 gol e 9 assist in tutte le competizioni. Al Mondiale si candida a protagonista assoluto con 38 presenze e 8 gol in nazionale."
+        }, 
+        {
+            "nome": "Jamal Musiala", 
+            "ruolo": "TREQUARTISTA", 
+            "club": "Bayern Monaco", 
+            "desc": "Stagione 2024-25 da stropicciarsi gli occhi: 12 gol e 21 assist solo in Bundesliga, con una media di 0,57 reti a partita in tutta la stagione. È diventato il più giovane giocatore tedesco in un torneo maggiore a 18 anni e 117 giorni. Ha già 73 gol in carriera a soli 23 anni."
+        }
+    ], 
+    "curiosita": ["Ha vinto 4 Coppe del Mondo (1954, 1974, 1990, 2014) e 3 Europei (1972, 1980, 1996).", "Vincitrice del proprio girone di qualificazione UEFA dominando gli scontri diretti.", "Ultima partecipazione al Mondiale: 2022 (eliminata clamorosamente ai gironi).", "Pronti a ricostruire la reputazione dopo le due eliminazioni a gironi nelle scorse edizioni."]
+},
+"Ecuador": {
+    "rank": "#23",
+    "ct": "Sebastian Beccacece", 
+    "ct_note": "Allenatore argentino cresciuto nella scuola tattica di Marcelo Bielsa, e storico collaboratore di Jorge Sampaoli. È conosciuto per squadre intense, aggressive e molto verticali. Con l’Ecuador sta cercando di unire organizzazione tattica e fisicità, valorizzando una delle generazioni più talentuose della storia della nazionale.", 
+    "convocati": "<b>Portieri:</b> H.Galíndez, M.Ramirez, G.Valle.<br><b>Difensori:</b> W.Pacho, P.Hincapié, J.Ordoñez, J.Porozo, F.Torres, P.Estupiñán, Y.Medina, A.Preciado.<br><b>Centrocampisti:</b> M.Caicedo, Paez, Castillo, Vite, Franco, Alcivar.<br><b>Attaccanti:</b> Yeboah, Angulo, Plata, Rodriguez, Arevalo, Minda, J.Caicedo, A.Valencia, E.Valencia.",
+    "modulo": "3-4-2-1",
+    "campo": "L’Ecuador di Beccacece è una squadra fisica e diretta che utilizza un 3-4-2-1 molto verticale. La costruzione è semplice e spesso rapida, con ricerca immediata della profondità e poca elaborazione centrale. Gli esterni sono fondamentali per ampiezza e progressione, mentre Caicedo garantisce equilibrio e intensità. In fase difensiva la squadra si compatta in un blocco aggressivo e molto forte nei duelli, ma può soffrire contro squadre tecniche.",
+    "formazione": [{"n":22,"nome":"Galindez","pos":"GK"},{"n":2,"nome":"Ordonez","pos":"DC_R"},{"n":6,"nome":"Pacho","pos":"DC_C"},{"n":3,"nome":"Hincapié","pos":"DC_L"},{"n":17,"nome":"Franco","pos":"ED"},{"n":23,"nome":"Caicedo","pos":"CC_R"},{"n":8,"nome":"Vite","pos":"CC_L"},{"n":7,"nome":"Estupiñán","pos":"ES"},{"n":10,"nome":"Páez","pos":"TRQ_R"},{"n":16,"nome":"Plata","pos":"TRQ_L"},{"n":13,"nome":"Valencia","pos":"ATT"}],
+    "giocatori": [
+      {"nome": "Moisés Caicedo", "ruolo": "MEDIANO", "club": "Chelsea", "desc": "Trasferito al Chelsea per 117 milioni di sterline — all'epoca il più caro nella storia della Premier League. Ha vinto la Conference League 2025 e il Mondiale per Club 2025. L'Ecuador ha subito solo 5 gol in 18 partite nelle qualificazioni CONMEBOL — il dato migliore in assoluto — con lui in cabina di regia."}, 
+      {"nome": "Willian Pacho", "ruolo": "DIFENSORE", "club": "Paris Saint-Germain", "desc": "Pilastro della retroguardia più impermeabile delle qualificazioni CONMEBOL: solo 5 gol subiti in 18 gare — miglior difesa del girone unico sudamericano. Forma con Hincapié (Arsenal) una coppia da top club. 10 clean sheet nelle ultime 15 qualificazioni dell'Ecuador."}
+    ], 
+    "curiosita": ["Nessun titolo internazionale di primissimo livello, ma costantemente competitiva nelle qualificazioni sudamericane.", "Si sono qualificati direttamente nel girone unico sudamericano (CONMEBOL) nonostante una penalizzazione iniziale.", "Ultima partecipazione al Mondiale: 2022 (eliminati alla fase a gironi).", "Dall'arrivo di Beccacece una sola sconfitta all'esordio col Brasile, 5 vittorie e 6 pareggi con 1 unico gol subito."]
+},
+"Costa d'Avorio": {
+    "rank": "#34",
+    "ct": "Emerse Faé", 
+    "ct_note": "Diventato commissario tecnico dopo aver preso in mano la squadra in emergenza e averla guidata alla vittoria della Coppa d’Africa 2023/24. Il suo stile è pragmatico, basato su solidità, transizioni e valorizzazione della fisicità del gruppo.", 
+    "convocati": "<b>Portieri:</b> Fofana, Lafont, Koné.<br><b>Difensori:</b> Konan, Akpa, Singo, Doué, Ndicka, Agbadou, O. Diomandé, Kossounou.<br><b>Centrocampisti:</b> Kessié, Fofana, Sangaré, Oulai, Guiagon, Seri.<br><b>Attaccanti:</b> Adingra, Diallo, Pépé, Guessand, Y. Diomandè, Wahi, Diakité, Touré, Bonny.",
+    "modulo": "4-3-3",
+    "campo": "La Costa d’Avorio di Faé è una squadra fisica e verticale, che punta tutto sulle transizioni rapide. Il 4-3-3 è molto diretto, con costruzione semplice e ricerca immediata degli esterni o della profondità. Il centrocampo, guidato da Kessié, è decisivo nelle seconde palle e nel recupero. In non possesso la squadra resta compatta ma non troppo aggressiva, diventando pericolosa soprattutto quando può attaccare in campo aperto.",
+    "formazione": [{"n":1,"nome":"Fofana","pos":"GK"},{"n":5,"nome":"Singo","pos":"DD"},{"n":2,"nome":"Kossounou","pos":"DC_R"},{"n":21,"nome":"Ndicka","pos":"DC_L"},{"n":3,"nome":"Konan","pos":"DS"},{"n":8,"nome":"Kessié","pos":"CC_R"},{"n":4,"nome":"Sangaré","pos":"MED"},{"n":6,"nome":"S. Fofana","pos":"CC_L"},{"n":14,"nome":"Diallo","pos":"AD"},{"n":24,"nome":"Diomandè","pos":"AS"},{"n":22,"nome":"Guessand","pos":"ATT"}],
+    "giocatori": [
+        {
+            "nome": "Simon Adingra", 
+            "ruolo": "ALA", 
+            "club": "Monaco", 
+            "desc": "Man of the Match nella finale AFCON 2024 contro la Nigeria: 5 dribbling riusciti, 6 passaggi chiave e 2 assist per la vittoria 2-1. Eletto Miglior Giovane del torneo. Decide dall'alto del 90' con un angolo al bacio su Kessié e un cross millimetrico per il 2-1 finale."
+        }, 
+        {
+            "nome": "Franck Kessié", 
+            "ruolo": "MEDIANO", 
+            "club": "Al-Ahli",
+            "desc": "Ha realizzato il gol del pareggio nella finale AFCON 2024 che ha avviato la rimonta decisiva sulla Nigeria. Leader assoluto: 9 anni consecutivi nelle convocazioni, uno dei centrocampisti africani più completi. La Costa d'Avorio ha vinto il girone CAF con 0 gol subiti e 0 sconfitte."
+        }
+    ], 
+    "curiosita": ["Ha vinto 3 edizioni della Coppa d'Africa (1992, 2015, e l'ultima del 2023/2024 giocata in casa).", "Vincitrice del proprio girone di qualificazione africano (CAF) sbaragliando la concorrenza con zero sconfitte e zero gol subiti.", "Ultima partecipazione al Mondiale: 2014 (assente nelle ultime due edizioni).", "Alla quarta partecipazione alla fase finale aspira a superare per la prima volta la fase a gironi."]
+},
+"Curaçao": {
+    "rank": "#82",
+    "ct": "Dick Advocaat", 
+    "ct_note": "allenatore olandese di enorme esperienza internazionale, noto per la sua gestione pragmatica e ordinata delle squadre. A Curaçao ha portato struttura tattica, disciplina e un tentativo di calcio più europeo, basato sul possesso e sull’organizzazione difensiva.", 
+    "convocati": "<b>Portieri:</b> T. Bodak, T. Doornbusch, E. Room.<br><b>Difensori:</b> R. Bazoer, J. Brenet, R. Van Eijma, S. Floranus, D. Fonville, J. Gaari, A. Obispo, S. Sambo.<br><b>Centrocampisti:</b> J. Bacuna, L. Bacuna, L. Comenencia, K. Felida, A. Martha, T. Noslin, G. Roemeratoe.<br><b>Attaccanti:</b> J. Antonisse, T. Chong, K. Gorré, S. Hansen, G. Kastaneer, B. Kuwas, J. Locadia, J. Margaritha.",
+    "modulo": "4-3-3",
+    "campo": "Curaçao prova a giocare un 4-3-3 di impostazione europea, con possesso palla e costruzione dal basso guidata dai centrocampisti. Tuttavia la mancanza di ritmo e precisione rende la manovra spesso prevedibile. La squadra difende in modo compatto ma fatica quando viene attaccata tra le linee o costretta ad alzare l’intensità. È una nazionale ordinata, ma con limiti evidenti contro avversari di livello superiore.",
+    "formazione": [{"n":1,"nome":"Room","pos":"GK"},{"n":3,"nome":"Sambo","pos":"DD"},{"n":2,"nome":"Bazoer","pos":"DC_R"},{"n":4,"nome":"Obispo","pos":"DC_L"},{"n":5,"nome":"Floranus","pos":"DS"},{"n":6,"nome":"Comenencia","pos":"MED"},{"n":10,"nome":"L. Bacuna","pos":"CC_R"},{"n":8,"nome":"J. Bacuna","pos":"CC_L"},{"n":7,"nome":"Chong","pos":"AD"},{"n":11,"nome":"Gorré","pos":"AS"},{"n":9,"nome":"Locadia","pos":"ATT"}],
+    "giocatori": [
+        {
+            "nome": "Leandro Bacuna", 
+            "ruolo": "CAPITANO", 
+            "club": "Iğdır FK", 
+            "desc": "Il simbolo del primo Mondiale di Curaçao: 3 assist e 18 chance create nelle qualificazioni CONCACAF. Oltre 100 presenze in Premier League con Aston Villa e Cardiff City. Condivide il record di presenze (70+) con Room. Gioca per la nazione più piccola — per superficie e popolazione — della storia dei Mondiali."
+        }, 
+        {
+            "nome": "Shurandy Sambo", 
+            "ruolo": "TERZINO", 
+            "club": "Sparta Rotterdam", 
+            "desc": "4,8 tackle per 90 minuti nelle qualificazioni CONCACAF: il record interno della squadra e il secondo dato più alto di tutta la fase qualificativa (dietro solo a Rosales del Guatemala con 5,5). Zero cartellini gialli malgrado l'aggressività difensiva."
+        }
+    ], 
+    "curiosita": ["Membro della CONCACAF, ha vinto la Coppa dei Caraibi nel 2017.", "Qualificata in quanto sorpresa delle qualificazioni CONCACAF, sfruttando un roster quasi interamente basato su giocatori dei campionati olandesi e inglesi.", "Esordiente assoluta: questa è la loro prima storica partecipazione a una fase finale dei Mondiali. Prima volta assoluta anche per un'isola caraibica.", "Sarà la nazione più piccola ad aver mai partecipato ad un mondiale."]
+}
+};
+
+const POS_MAP = {
+  "GK": [50, 92],
+  "DC_C": [50, 78], "DC_L": [30, 78], "DC_R": [70, 78], "DD": [88, 75], "DS": [12, 75],
+  "MED": [50, 58], "MED_L": [38, 60], "MED_R": [62, 60],
+  "CC_L": [30, 50], "CC_R": [70, 50], "CC_C": [50, 50], "ED": [90, 48], "ES": [10, 48],
+  "TRQ_C": [50, 35], "TRQ_L": [25, 35], "TRQ_R": [75, 35],
+  "AD": [82, 22], "AS": [18, 22], "ATT": [50, 15], "ATT_L": [35, 15], "ATT_R": [65, 15]
+};
+
+let cmpChart = null;
+
+function fmt(v,u){ return v==null?'–':v.toFixed(1)+u }
+
+function norm(v, benchmark, invert = false) { 
+  if (v == null || v === 0) return 0;
+  if (invert) {
+    return Math.max(0, Math.min(100, (benchmark / v) * 100));
+  } else {
+    return Math.max(0, Math.min(100, (v / benchmark) * 100));
+  }
+}
+
+function flagUrl(name){ const c=FLAG_CODES[name]; return c?`https://flagcdn.com/w80/${c}.png`:null }
+function flagEl(name,w,h){ const u=flagUrl(name); return u?`<img src="${u}" style="width:${w}px;height:${h}px;object-fit:cover;border-radius:3px" alt="${name}" loading="lazy">`:''}
+function initials(n){ return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() }
+
+function show(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on'); btn.classList.add('active');
+  if(id==='compare') initCmp();
+  if(id==='ranking') buildRanking();
+}
+
+function openDrawer(teamName){
+  const p = PROFILES[teamName];
+  const t = TEAMS.find(x=>x.name===teamName);
+  if(!p) return;
+  
+  const fu = flagUrl(teamName);
+  const flagHtml = fu
+    ? `<img class="drawer-flag" src="${fu}" alt="${teamName}">`
+    : `<div class="drawer-flag-fb" style="background:${t?t.colorLight:'#eee'};color:${t?t.color:'#333'}">${initials(teamName)}</div>`;
+
+  document.getElementById('drawer-hero').innerHTML = `
+    <button class="drawer-close" onclick="closeDrawer()">&#10005;</button>
+    ${flagHtml}
+    <div class="drawer-title">${teamName} <span style="font-size:22px;color:var(--text3);font-weight:600">${p.rank||''}</span></div>
+    <div class="drawer-subtitle">Modulo: <b>${p.modulo}</b> &nbsp;·&nbsp; CT: <b>${p.ct}</b></div>`;
+
+  let colLeft = '<div>';
+  let colRight = '<div>';
+
+  if(p.curiosita && p.curiosita.length){
+    colLeft += `<div class="drawer-section">
+      <div class="ds-title">Curiosità e Storia</div>
+      <ul class="curiosita-list">`;
+    p.curiosita.forEach(c=>{ colLeft += `<li>${c}</li>`; });
+    colLeft += `</ul></div>`;
+  }
+
+  colLeft += `<div class="drawer-section">
+    <div class="ds-title">Storia del Commissario Tecnico</div>
+    <div class="ct-card">
+      <div class="ct-badge" style="background:${t?t.colorLight:'#eee'}">🧠</div>
+      <div><div class="ct-name">${p.ct}</div><div class="ct-note">${p.ct_note}</div></div>
+    </div>
+  </div>`;
+
+  if(p.campo){
+    colLeft += `<div class="drawer-section">
+      <div class="ds-title">Analisi in campo</div>
+      <div class="ct-note" style="background:var(--bg); padding:16px; border-radius:12px; font-style:italic; border:1px solid var(--border); font-size:14px;">${p.campo}</div>
+    </div>`;
+  }
+  
+  if(p.convocati){
+    colLeft += `<div class="drawer-section">
+      <div class="ds-title">I 26 Convocati</div>
+      <div class="ct-note" style="background:var(--bg); padding:14px; border-radius:12px; border:1px solid var(--border); font-size:13.5px; line-height:1.6;">
+        ${p.convocati}
+      </div>
+    </div>`;
+  }
+  
+  colLeft += '</div>';
+  
+  if(p.formazione){
+    colRight += `<div class="drawer-section">
+      <div class="ds-title">Probabile Formazione</div>
+      <div class="tactical-board">
+        <div class="pitch-line area-top"></div><div class="pitch-line area-bot"></div>
+        <div class="pitch-line mid-line"></div><div class="pitch-line center-circle"></div>`;
+    p.formazione.forEach(pl => {
+      const coords = POS_MAP[pl.pos] || [50, 50];
+      colRight += `<div class="player-pin" style="left:${coords[0]}%; top:${coords[1]}%">
+        <div class="pin-circle" style="border-color:${t.color}">${pl.n}</div>
+        <div class="pin-name">${pl.nome}</div>
+      </div>`;
+    });
+    colRight += `</div></div>`;
+  }
+
+  if(p.giocatori && p.giocatori.length){
+    colRight += `<div class="drawer-section"><div class="ds-title">Calciatori da tener d'occhio</div><div class="player-list">`;
+    p.giocatori.forEach((g,i)=>{
+      colRight += `<div class="player-item">
+        <div class="player-num" style="background:${t?t.color:'#555'}">${i+1}</div>
+        <div style="flex:1">
+          <div class="player-name">${g.nome}</div>
+          <div class="player-meta">${g.club}</div>
+          ${g.desc ? `<div class="player-desc">${g.desc}</div>` : ''}
+        </div>
+        <div class="player-role" style="background:var(--dark)">${g.ruolo}</div>
+      </div>`;
+    });
+    colRight += `</div></div>`;
+  }
+  colRight += '</div>';
+
+  const finalBody = `<div class="modal-grid">${colLeft}${colRight}</div>`;
+  document.getElementById('drawer-body').innerHTML = finalBody;
+  
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  document.body.style.overflow = 'hidden'; 
+}
+
+function closeDrawer(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
+
+function buildHeroTeams(){
+  const el = document.getElementById('hero-teams');
+  TEAMS.forEach(t=>{
+    const pill = document.createElement('div');
+    pill.className='hero-pill';
+    const u=flagUrl(t.name);
+    pill.innerHTML=(u?`<img src="${u}" alt="${t.name}">`:'')+'<span>'+t.name+'</span>';
+    el.appendChild(pill);
+  });
+}
+
+function buildKPI(){
+  const strip = document.getElementById('kpi-strip');
+  const manualKPIs = [
+    { label: 'Possesso Palla', value: '73.2', unit: '%', team: 'Germania' },
+    { label: 'Porte inviolate', value: '13', unit: '', team: 'Ecuador' },
+    { label: 'Cross completati', value: '7.2', unit: '', team: "Costa d'Avorio" },
+    { label: 'Palle perse', value: '11.2', unit: '', team: 'Curaçao' }
+  ];
+  manualKPIs.forEach(kpi => {
+    const t = TEAMS.find(x => x.name === kpi.team);
+    const uniqueClass = `kpi-${kpi.team.replace(/ /g,'-').replace(/'/g,'')}`;
+
+    const card = document.createElement('div');
+    card.className = `kpi ${uniqueClass}`;
+    
+    // Testo numerico di default senza colore
+    card.innerHTML = `<div class="kpi-label">${kpi.label}</div>
+      <div class="kpi-value">${kpi.value}${kpi.unit}</div>
+      <div class="kpi-team">${flagEl(kpi.team, 18, 13)} ${kpi.team}</div>`;
+    
+    // Inietta lo stile per ricolorare solo la striscia ::before
+    if(t) {
+      const styleEl = document.createElement('style');
+      styleEl.innerHTML = `.${uniqueClass}::before { background: linear-gradient(90deg, ${t.color}, ${t.color}66) !important; }`;
+      document.head.appendChild(styleEl);
+    }
+
+    strip.appendChild(card);
+  });
+}
+
+function buildOverview(){
+  const grid=document.getElementById('ov-grid');
+  TEAMS.forEach(t=>{
+    const card=document.createElement('div');
+    card.className='tcard';
+    card.onclick=()=>openDrawer(t.name);
+    const fu=flagUrl(t.name);
+    const badge=fu?`<div class="flag-wrap"><img src="${fu}" alt="${t.name}"></div>`
+                  :`<div class="flag-fb" style="background:${t.colorLight};color:${t.color}">${initials(t.name)}</div>`;
+    let h=`<style>.tc-${t.name.replace(/ /g,'-').replace(/'/g,'')}::before{background:linear-gradient(90deg,${t.color},${t.color}66)}</style>`;
+    card.classList.add(`tc-${t.name.replace(/ /g,'-').replace(/'/g,'')}`);
+    h+=`<div class="card-hdr">${badge}<div>
+      <div class="tname">${t.name} <span style="font-size:12px; color:var(--text3)">${PROFILES[t.name]?.rank || ''}</span></div>
+      <div class="tsub">${t.matches} partite analizzate</div>
+    </div></div>`;
+    if(!t.hasData){
+      h+=`<div class="nodata-badge">&#9888; Dati non disponibili</div>
+          <p class="nodata-text">Statistiche non disponibili su Sofascore per questa confederazione.</p>`;
+    } else {
+      const s=t.stats;
+      [['Possesso palla',s.possession_pct,74.38,false],
+       ['Precisione passaggi',s.pass_accuracy,92.02,false],
+       ['PPDA',s.ppda,6.23,true],
+       ['Big chance sfruttate',s.big_chance_conv,78.57,false]].forEach(([l,v,m,invert])=>{
+        const pct = norm(v, m, invert);
+        h+=`<div class="brow"><div class="blbl"><span>${l}</span><span>${v!=null?v.toFixed(1)+(l.includes('PPDA')?'':'%'):'–'}</span></div>
+          <div class="btrk"><div class="bfll" style="width:${pct.toFixed(1)}%;background:${t.color}"></div></div></div>`;
+      });
+      h+=`<div class="divider"></div>`;
+      [['Tiri a partita',fmt(s.shots_total,'')],['Tiri in porta (%)',fmt(s.shot_accuracy,'%')],
+       ['Tocchi area avv.',fmt(s.touches_opp_box,'')],['Big chances create',fmt(s.big_chances_created,'')],
+       ['Tiri subiti',fmt(s.opp_shots_total,'')]].forEach(([l,v])=>{
+        h+=`<div class="srow"><span class="slbl">${l}</span><span class="sval">${v}</span></div>`;
+      });
+    }
+    h+=`<div class="click-hint">&#128269; Clicca per aprire la Scheda</div>`;
+    card.innerHTML=h;
+    grid.appendChild(card);
+  });
+}
+
+function buildRadars(){
+  const grid=document.getElementById('rd-grid');
+  TEAMS.filter(t=>t.hasData).forEach(t=>{
+    const cid='r-'+t.name.replace(/ /g,'-').replace(/'/g,'');
+    const card=document.createElement('div');
+    card.className='rcard';
+    const fu=flagUrl(t.name);
+    const fl=fu?`<img src="${fu}" style="width:22px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;margin-right:5px" alt="">`:'';
+    card.innerHTML=`<div class="rname">${fl}${t.name}</div>
+      <div class="rsub">${t.matches} partite</div>
+      <div style="position:relative;height:240px"><canvas id="${cid}"></canvas></div>`;
+    grid.appendChild(card);
+    setTimeout(()=>{
+      const ctx=document.getElementById(cid).getContext('2d');
+      const g=ctx.createRadialGradient(120,120,10,120,120,120);
+      g.addColorStop(0,t.color+'55'); g.addColorStop(1,t.color+'0a');
+      new Chart(ctx,{type:'radar',data:{labels:RADAR_DIMS.map(d=>d[1]),datasets:[{
+        data: RADAR_DIMS.map(d => norm(t.stats[d[0]], d[2], d[3])),
+        backgroundColor:g,borderColor:t.color,borderWidth:2.5,pointBackgroundColor:t.color,pointBorderColor:'#fff',pointBorderWidth:1.5,pointRadius:4,pointHoverRadius:6
+      }]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+        scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(128,128,128,.10)'},
+          pointLabels:{font:{size:11,weight:'500',family:"'Inter',sans-serif"},color:'rgba(128,128,128,.85)'},
+          angleLines:{color:'rgba(128,128,128,.10)'}}}}});
+    },50);
+  });
+}
+
+function initCmp(){
+  const elig=TEAMS.filter(t=>t.hasData);
+  if(elig.length<2) return;
+  const sA=document.getElementById('sel-a'),sB=document.getElementById('sel-b');
+  if(!sA.options.length){ elig.forEach((t,i)=>{sA.add(new Option(t.name,i));sB.add(new Option(t.name,i));});sB.selectedIndex=Math.min(1,elig.length-1);}
+  drawCmp();
+}
+
+function drawCmp(){
+  const elig=TEAMS.filter(t=>t.hasData);
+  const tA=elig[parseInt(document.getElementById('sel-a').value)];
+  const tB=elig[parseInt(document.getElementById('sel-b').value)];
+  if(!tA||!tB) return;
+  document.getElementById('cmp-leg').innerHTML=`
+    <div class="li"><span class="ldot" style="background:${tA.color}"></span>${flagEl(tA.name,18,13)} ${tA.name}</div>
+    <div class="li"><span class="ldot" style="background:${tB.color}"></span>${flagEl(tB.name,18,13)} ${tB.name}</div>`;
+  const ctx=document.getElementById('cmp-canvas').getContext('2d');
+  if(cmpChart) cmpChart.destroy();
+  const gA=ctx.createRadialGradient(250,250,20,250,250,220);
+  gA.addColorStop(0,tA.color+'50');gA.addColorStop(1,tA.color+'08');
+  const gB=ctx.createRadialGradient(250,250,20,250,250,220);
+  gB.addColorStop(0,tB.color+'40');gB.addColorStop(1,tB.color+'06');
+  cmpChart=new Chart(ctx,{type:'radar',data:{labels:RADAR_DIMS.map(d=>d[1]),datasets:[
+    {label:tA.name, data: RADAR_DIMS.map(d => norm(tA.stats[d[0]], d[2], d[3])), backgroundColor:gA,borderColor:tA.color,borderWidth:2.5,pointBackgroundColor:tA.color,pointBorderColor:'#fff',pointBorderWidth:1.5,pointRadius:5},
+    {label:tB.name, data: RADAR_DIMS.map(d => norm(tB.stats[d[0]], d[2], d[3])), backgroundColor:gB,borderColor:tB.color,borderWidth:2.5,pointBackgroundColor:tB.color,pointBorderColor:'#fff',pointBorderWidth:1.5,pointRadius:5,borderDash:[6,3]},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(128,128,128,.10)'},
+      pointLabels:{font:{size:12,weight:'600',family:"'Inter',sans-serif"},color:'rgba(128,128,128,.85)'},
+      angleLines:{color:'rgba(128,128,128,.10)'}}}}});
+}
+
+function buildRanking(){
+  const grid=document.getElementById('rk-grid');
+  if(grid.children.length) return;
+  RANKING_METRICS.forEach(([key,label,unit,invert,max])=>{
+    const elig=TEAMS.filter(t=>t.hasData&&t.stats[key]!=null);
+    if(!elig.length) return;
+    
+    const sorted=[...elig].sort((a,b)=>invert?a.stats[key]-b.stats[key]:b.stats[key]-a.stats[key]);
+    
+    const card=document.createElement('div'); card.className='rkcard';
+    let h=`<div class="rktitle">${label}</div>`;
+    
+    let bestValue = max;
+    if (key === 'ppda') bestValue = 6.23;
+    if (key === 'opp_shots_total') bestValue = 3.83;
+
+    sorted.forEach((t,i)=>{
+      const v=t.stats[key];
+      const pct = norm(v, bestValue, invert);
+      
+      h+=`<div class="ritem">
+        <span class="rnum">${i+1}</span>
+        ${flagEl(t.name,22,16)}
+        <span class="rname2">${t.name}</span>
+        <div class="rtrk"><div class="rfll" style="width:${pct.toFixed(1)}%;background:${t.color}"></div></div>
+        <span class="rval">${v.toFixed(1)}${unit}</span>
+      </div>`;
+    });
+    const miss=TEAMS.filter(t=>!t.hasData||t.stats[key]==null);
+    if(miss.length) h+=`<div class="rnd">Dati n/d: ${miss.map(t=>t.name).join(', ')}</div>`;
+    card.innerHTML=h; grid.appendChild(card);
+  });
+}
+
+buildHeroTeams(); buildKPI(); buildOverview(); buildRadars();
+</script>
+</body>
+</html>
