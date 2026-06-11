@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gruppo L — Mondiali 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F7FB;--card:#FFF;--border:#E5E7EB;
+  --text:#111827;--text2:#6B7280;--text3:#9CA3AF;
+  --blue:#2563EB;--red:#DC2626;--green:#059669;--gold:#D97706;--dark:#0F172A;
+  --font:'Inter',system-ui,sans-serif;--r:12px;--rl:20px;
+  --sh:0 4px 16px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04);
+  --sh-hover:0 12px 32px rgba(0,0,0,.10),0 2px 8px rgba(0,0,0,.06);
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0F172A;--card:#1E293B;--border:rgba(255,255,255,.08);
+  --text:#F1F5F9;--text2:#94A3B8;--text3:#475569;
+  --sh:0 4px 16px rgba(0,0,0,.3);--sh-hover:0 12px 32px rgba(0,0,0,.4);
+}}
+body{font-family:var(--font);background:var(--bg);color:var(--text);padding:2rem 1.25rem;max-width:960px;margin:0 auto;-webkit-font-smoothing:antialiased}
+.hero{background:linear-gradient(135deg,#0F172A 0%,#1E3A8A 60%,#1D4ED8 100%);border-radius:24px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 10px 40px rgba(37,99,235,.25);position:relative;overflow:hidden}
+@media(max-width:600px){.hero{padding:1.5rem;border-radius:16px}}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);border-radius:50%}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px;padding-right:160px}
+@media(max-width:600px){.hero-label{padding-right:0}}
+.hero h1{font-size:38px;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.1;padding-right:160px}
+@media(max-width:600px){.hero h1{font-size:28px;padding-right:0}}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);margin-top:10px}
+.hero-teams{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}
+.hero-pill{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.10);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:5px 12px 5px 6px;font-size:13px;font-weight:500;color:#fff}
+.hero-pill img{width:22px;height:16px;object-fit:cover;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:2rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem;box-shadow:var(--sh);position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--rl) var(--rl) 0 0}
+.kpi.blue::before{background:linear-gradient(90deg,#2563EB,#60A5FA)}
+.kpi.red::before{background:linear-gradient(90deg,#DC2626,#F87171)}
+.kpi.green::before{background:linear-gradient(90deg,#059669,#34D399)}
+.kpi.gold::before{background:linear-gradient(90deg,#D97706,#FCD34D)}
+.kpi-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.kpi-value{font-size:18px;font-weight:700;color:var(--text)}
+.kpi-team{font-size:12px;color:var(--text2);margin-top:3px;font-weight:500;display:flex;align-items:center;gap:4px}
+.tabs-wrap{background:var(--card);padding:5px;border-radius:16px;display:inline-flex;gap:4px;box-shadow:var(--sh);margin-bottom:1.75rem;flex-wrap:wrap;max-width:100%}
+@media(max-width:600px){.tabs-wrap{display:flex;overflow-x:auto;flex-wrap:nowrap;width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none}.tabs-wrap::-webkit-scrollbar{display:none}.tab{white-space:nowrap;flex-shrink:0}}
+.tab{padding:9px 20px;border-radius:12px;font-size:13px;font-weight:500;font-family:var(--font);border:none;background:transparent;color:var(--text2);cursor:pointer;transition:all .2s}
+.tab:hover{background:var(--bg);color:var(--text)}
+.tab.active{background:var(--dark);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.sec{display:none}.sec.on{display:block}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;box-shadow:var(--sh);transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;cursor:pointer}
+.tcard:hover{transform:translateY(-4px);box-shadow:var(--sh-hover)}
+.tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--rl) var(--rl) 0 0}
+.card-hdr{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem}
+.flag-wrap{width:52px;height:52px;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12);flex-shrink:0}
+.flag-wrap img{width:100%;height:100%;object-fit:cover}
+.flag-fb{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0}
+.tname{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.tsub{font-size:12px;color:var(--text2);margin-top:2px;font-weight:500}
+.click-hint{font-size:11px;color:var(--text3);margin-top:8px;font-style:italic}
+.brow{padding:6px 0}
+.blbl{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500}
+.blbl span:last-child{font-weight:600;color:var(--text)}
+.btrk{height:5px;background:var(--bg);border-radius:4px;overflow:hidden}
+.bfll{height:100%;border-radius:4px;animation:growBar 1s cubic-bezier(.4,0,.2,1) both}
+@keyframes growBar{from{width:0 !important}}
+.divider{height:1px;background:var(--border);margin:12px 0}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid var(--border)}
+.srow:last-child{border-bottom:none}
+.slbl{color:var(--text2)}.sval{font-weight:600}
+.nodata-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(217,119,6,.10);color:#B45309;border-radius:100px;font-size:12px;font-weight:600;margin-bottom:12px}
+.nodata-text{font-size:13px;color:var(--text2);line-height:1.65}
+.rcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;box-shadow:var(--sh);text-align:center;transition:transform .25s,box-shadow .25s}
+.rcard:hover{transform:translateY(-3px);box-shadow:var(--sh-hover)}
+.rname{font-size:15px;font-weight:700;margin-bottom:2px}
+.rsub{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:14px}
+.cmp-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.75rem;box-shadow:var(--sh)}
+.ctrls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.ctrls label{font-size:13px;font-weight:600;color:var(--text2)}
+.ctrls select{flex:1;min-width:140px;padding:8px 12px;border-radius:var(--r);font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:var(--font);cursor:pointer}
+.legend{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.li{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--text2)}
+.ldot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.rkcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;box-shadow:var(--sh)}
+.rktitle{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.ritem{display:flex;align-items:center;gap:10px;padding:6px 0}
+.rnum{font-size:12px;font-weight:700;color:var(--text3);min-width:18px}
+.rname2{font-size:13px;font-weight:500;min-width:100px}
+.rtrk{flex:1;height:6px;background:var(--bg);border-radius:4px;overflow:hidden}
+.rfll{height:100%;border-radius:4px;animation:growBar 1s cubic-bezier(.4,0,.2,1) both}
+.rval{font-size:13px;font-weight:700;min-width:52px;text-align:right}
+.rnd{font-size:11px;color:var(--text3);margin-top:8px}
+.overlay{position:fixed;inset:0;background:rgba(15, 23, 42, 0.65);backdrop-filter:blur(6px);z-index:100;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:50%;left:50%;transform:translate(-50%, -48%) scale(0.96);opacity:0;pointer-events:none;width:min(900px, 92vw);max-height:92vh;background:var(--card);box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);z-index:101;transition:all .35s cubic-bezier(.4,0,.2,1);overflow-y:auto;display:flex;flex-direction:column;border-radius:24px;}
+.drawer.open{transform:translate(-50%, -50%) scale(1);opacity:1;pointer-events:auto;}
+@media(max-width:600px){.drawer{width:100%;max-height:100%;top:0;left:0;transform:translateY(100%);border-radius:0;}.drawer.open{transform:translateY(0)}.drawer-hero{padding:1.5rem 1.25rem 1rem}.drawer-body{padding:0 1.25rem 2rem}.drawer-title{font-size:24px}.drawer-close{top:1rem;right:1rem}}
+.drawer-hero{padding:2.5rem 2.5rem 1.5rem;position:relative;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
+.drawer-close{position:absolute;top:1.5rem;right:1.5rem;width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text2);transition:all .15s}
+.drawer-close:hover{background:var(--border);color:var(--text)}
+.drawer-flag{width:80px;height:56px;object-fit:cover;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.15);margin-bottom:16px}
+.drawer-title{font-size:32px;font-weight:800;letter-spacing:-.02em}
+.drawer-subtitle{font-size:15px;color:var(--text2);margin-top:6px;font-weight:500;}
+.drawer-body{padding:0 2.5rem 2.5rem;flex:1}
+.modal-grid{display:grid;grid-template-columns:1fr;gap:2rem;}
+@media(min-width: 768px){.modal-grid{grid-template-columns:1fr 1fr;gap:2.5rem;}}
+.drawer-section{margin-bottom:1.75rem}
+.drawer-section:last-child{margin-bottom:0}
+.ds-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--text3);margin-bottom:12px;border-bottom:1px solid var(--bg);padding-bottom:8px;}
+.ct-card{display:flex;align-items:flex-start;gap:12px;background:var(--bg);border-radius:14px;padding:14px 16px;border:1px solid var(--border)}
+.ct-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ct-name{font-size:15px;font-weight:700}
+.ct-note{font-size:13px;color:var(--text2);line-height:1.55;margin-top:4px}
+.tactical-board{position:relative;width:100%;aspect-ratio:4/5;background:#3d7a44;border:2px solid rgba(255,255,255,0.2);border-radius:12px;margin-top:10px;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);background-size:20% 20%;box-shadow:inset 0 0 20px rgba(0,0,0,0.2);}
+.pitch-line{position:absolute;border:1.5px solid rgba(255,255,255,0.3);}
+.area-top{top:-2px;left:20%;width:60%;height:18%;border-top:none;}
+.area-bot{bottom:-2px;left:20%;width:60%;height:18%;border-bottom:none;}
+.mid-line{top:50%;width:100%;border-left:none;border-right:none;border-bottom:none;}
+.center-circle{top:40%;left:30%;width:40%;height:20%;border-radius:50%;}
+.player-pin{position:absolute;transform:translate(-50%, -50%);display:flex;flex-direction:column;align-items:center;z-index:10;}
+.pin-circle{width:24px;height:24px;background:#fff;color:#000;border-radius:50%;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,0.4);border:2px solid var(--blue);}
+.pin-name{font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.8);margin-top:3px;white-space:nowrap;background:rgba(0,0,0,0.4);padding:2px 5px;border-radius:4px;}
+.player-list{display:flex;flex-direction:column;gap:8px}
+.player-item{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:12px;padding:12px 14px;border:1px solid var(--border)}
+.player-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.player-name{font-size:14px;font-weight:600}
+.player-meta{font-size:12px;color:var(--text2);margin-top:2px}
+.player-desc{font-size:12.5px;color:var(--text);margin-top:6px;line-height:1.45;font-style:italic}
+.player-role{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;color:#fff;margin-left:auto;flex-shrink:0;background:#64748b}
+.curiosita-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.curiosita-list li{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--text);line-height:1.55;background:var(--bg);border-radius:12px;padding:12px 16px;border:1px solid var(--border)}
+.curiosita-list li::before{content:'💡';flex-shrink:0;font-size:16px}
+canvas{display:block}
+.firma {
+  position: absolute;
+  top: 1.75rem;
+  right: 2rem;
+  text-align: right;
+  z-index: 10;
+}
+@media (max-width: 600px) {
+  .firma {
+    position: static;
+    text-align: left;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,.15);
+  }
+}
+.firma-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.40);
+  margin-bottom: 2px;
+}
+.firma-name {
+  font-family: Palatino, 'Palatino Linotype', Georgia, serif;
+  font-size: 19px;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(255,255,255,.92);
+  letter-spacing: .02em;
+  line-height: 1.2;
+}
+.firma-sub {
+  font-family: Palatino, 'Palatino Linotype', Georgia, serif;
+  font-size: 9px;
+  font-style: italic;
+  color: rgba(255,255,255,.38);
+  margin-top: 1px;
+  letter-spacing: .08em;
+}
+.team-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+
+.footer-names {
+  font-family: Palatino, 'Palatino Linotype', Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text);
+}
+@media (max-width: 600px) {
+  /* 1. Ottimizza la Card Blu e il Titolo */
+  .hero { padding: 1.5rem; border-radius: 16px; }
+  .hero-label { padding-right: 0; }
+  .hero h1 { font-size: 28px; padding-right: 0; }
+  
+  /* 2. Risolve la sovrapposizione della Firma */
+  .firma {
+    position: static;
+    text-align: left;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,.15);
+  }
+
+  /* 3. Crea lo scroll orizzontale per i Tab (Panoramica, Radar, ecc.) */
+  .tabs-wrap {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabs-wrap::-webkit-scrollbar { display: none; }
+  .tab { white-space: nowrap; flex-shrink: 0; }
+
+  /* 4. Ottimizza la finestra modale delle squadre a tutto schermo */
+  .drawer {
+    width: 100%;
+    max-height: 100%;
+    top: 0;
+    left: 0;
+    transform: translateY(100%);
+    border-radius: 0;
+  }
+  .drawer.open { transform: translateY(0); }
+  .drawer-hero { padding: 1.5rem 1.25rem 1rem; }
+  .drawer-body { padding: 0 1.25rem 2rem; }
+  .drawer-title { font-size: 24px; }
+  .drawer-close { top: 1rem; right: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<div class="firma">
+  <div class="firma-label">A cura del Team di</div>
+  <div class="firma-name">Lorenzo Zanotti</div>
+</div>
+  <div class="hero-label">FIFA World Cup 2026 &nbsp;·&nbsp; Analisi Tattica</div>
+  <h1>Gruppo L</h1>
+  <div class="hero-sub">Profili basati sulle Qualificazioni</div>
+  <div class="hero-teams" id="hero-teams"></div>
+</div>
+<div class="kpi-strip" id="kpi-strip"></div>
+<div class="tabs-wrap">
+  <button class="tab active" onclick="show('overview',this)">Panoramica</button>
+  <button class="tab" onclick="show('radar',this)">Radar</button>
+  <button class="tab" onclick="show('compare',this)">Confronto</button>
+  <button class="tab" onclick="show('ranking',this)">Ranking</button>
+</div>
+<div id="overview" class="sec on"><div class="g2" id="ov-grid"></div></div>
+<div id="radar"    class="sec"><div class="g3" id="rd-grid"></div></div>
+<div id="compare"  class="sec">
+  <div class="cmp-card">
+    <div class="ctrls">
+      <label>Squadra A</label><select id="sel-a" onchange="drawCmp()"></select>
+      <label>vs</label><select id="sel-b" onchange="drawCmp()"></select>
+    </div>
+    <div class="legend" id="cmp-leg"></div>
+    <div style="position:relative;height:500px"><canvas id="cmp-canvas"></canvas></div>
+  </div>
+</div>
+<div id="ranking" class="sec"><div class="g2" id="rk-grid"></div></div>
+
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-hero" id="drawer-hero"></div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<div class="team-footer">
+  <div class="footer-label">In collaborazione con</div>
+  <div class="footer-names">
+    Andrea Marinozzi, Lorenzo Triolo, Luca Rossini, Tommaso Arone
+  </div>
+</div>
+
+<script>
+const TEAMS = [
+  {"name": "Inghilterra", "color": "#DC2626", "colorLight": "rgba(37,99,235,0.12)", "hasData": true, "matches": 8, "stats": {"aerial_duels_won_pct": 10.88, "ball_recoveries": 43.38, "big_chance_conv": 40.79, "big_chances_created": 4.12, "big_chances_missed": 2.62, "big_chances_scored": 1.71, "clearances": 8.12, "corners": 7.5, "crosses_accurate": 6.0, "crosses_accurate_pct": 27.01, "crosses_accurate_tot": 23.75, "dispossessed": 5.5, "dribbles_success_pct": 9.25, "duels_won_pct": 55.62, "errors_lead_to_goal": 0.0, "errors_lead_to_shot": 0.6, "final_third_entries": 95.25, "final_third_phase_pct": 220.5, "final_third_phase_pct_pct": 84.35, "final_third_phase_pct_tot": 260.38, "fouled_final_third": 3.43, "fouls": 9.5, "free_kicks": 10.0, "gk_dive_saves": 0.4, "gk_high_claims": 0.17, "gk_penalty_saves": null, "gk_punches": 0.33, "gk_saves": 0.75, "goal_kicks": 2.5, "ground_duels_won_pct": 31.0, "hit_woodwork": 0.5, "interceptions": 6.75, "long_balls_accurate": 18.5, "long_balls_accurate_pct": 65.34, "long_balls_accurate_tot": 30.0, "n_matches": 8.0, "offsides": 2.0, "opp_aerial_duels_won_pct": 7.5, "opp_ball_recoveries": 34.25, "opp_big_chances_created": 0.38, "opp_big_chances_missed": 0.38, "opp_big_chances_scored": 0.0, "opp_clearances": 33.25, "opp_corners": 2.12, "opp_crosses_accurate": 1.0, "opp_crosses_accurate_pct": 16.19, "opp_crosses_accurate_tot": 6.75, "opp_dispossessed": 6.62, "opp_dribbles_success_pct": 3.62, "opp_duels_won_pct": 44.38, "opp_errors_lead_to_goal": 1.0, "opp_errors_lead_to_shot": 1.0, "opp_final_third_entries": 23.62, "opp_final_third_phase_pct": 20.25, "opp_final_third_phase_pct_pct": 54.05, "opp_final_third_phase_pct_tot": 35.75, "opp_fouled_final_third": 0.86, "opp_fouls": 10.25, "opp_free_kicks": 9.5, "opp_gk_dive_saves": 1.8, "opp_gk_high_claims": 1.33, "opp_gk_penalty_saves": null, "opp_gk_punches": 1.0, "opp_gk_saves": 5.12, "opp_goal_kicks": 10.62, "opp_ground_duels_won_pct": 26.5, "opp_hit_woodwork": 0.12, "opp_interceptions": 8.12, "opp_long_balls_accurate": 18.25, "opp_long_balls_accurate_pct": 38.72, "opp_long_balls_accurate_tot": 47.88, "opp_offsides": 1.12, "opp_pass_accuracy": 73.55, "opp_passes_accurate": 186.0, "opp_passes_total": 246.25, "opp_possession_pct": 25.62, "opp_red_cards": 1.0, "opp_shot_accuracy": 14.29, "opp_shots_blocked": 1.38, "opp_shots_inside_box": 2.75, "opp_shots_off_target": 2.12, "opp_shots_on_target": 0.75, "opp_shots_outside_box": 1.5, "opp_shots_total": 4.25, "opp_tackles": 13.75, "opp_tackles_won_pct": 8.25, "opp_through_balls_accurate": 0.14, "opp_throw_ins": 12.5, "opp_touches_opp_box": 6.5, "opp_yellow_cards": 1.57, "pass_accuracy": 92.02, "passes_accurate": 660.25, "passes_total": 717.12, "possession_pct": 74.38, "ppda": 6.72, "red_cards": 0.0, "shot_accuracy": 44.25, "shots_blocked": 5.25, "shots_inside_box": 12.75, "shots_off_target": 5.75, "shots_on_target": 7.88, "shots_outside_box": 6.12, "shots_total": 18.88, "tackles": 12.0, "tackles_won_pct": 7.38, "through_balls_accurate": 2.0, "throw_ins": 16.38, "touches_opp_box": 44.25, "yellow_cards": 0.86}}, 
+  {"name": "Croazia", "color": "#2563EB", "colorLight": "rgba(220,38,38,0.12)", "hasData": true, "matches": 8, "stats": {"aerial_duels_won_pct": 17.88, "ball_recoveries": 47.38, "big_chance_conv": 42.79, "big_chances_created": 5.75, "big_chances_missed": 3.38, "big_chances_scored": 2.71, "clearances": 19.5, "corners": 9.25, "crosses_accurate": 7.62, "crosses_accurate_pct": 23.75, "crosses_accurate_tot": 30.25, "dispossessed": 7.38, "dribbles_success_pct": 8.88, "duels_won_pct": 55.62, "errors_lead_to_goal": 0.5, "errors_lead_to_shot": 0.0, "final_third_entries": 69.88, "final_third_phase_pct": 178.5, "final_third_phase_pct_pct": 80.19, "final_third_phase_pct_tot": 218.25, "fouled_final_third": 2.75, "fouls": 8.88, "free_kicks": 10.75, "gk_dive_saves": 0.57, "gk_high_claims": 0.6, "gk_penalty_saves": 0.0, "gk_punches": 0.4, "gk_saves": 1.88, "goal_kicks": 4.62, "ground_duels_won_pct": 30.88, "hit_woodwork": 0.62, "interceptions": 6.62, "long_balls_accurate": 29.25, "long_balls_accurate_pct": 64.74, "long_balls_accurate_tot": 45.88, "n_matches": 8.0, "offsides": 2.5, "opp_aerial_duels_won_pct": 14.62, "opp_ball_recoveries": 42.12, "opp_big_chances_created": 0.88, "opp_big_chances_missed": 0.75, "opp_big_chances_scored": 0.14, "opp_clearances": 37.5, "opp_corners": 3.12, "opp_crosses_accurate": 2.38, "opp_crosses_accurate_pct": 22.39, "opp_crosses_accurate_tot": 10.5, "opp_dispossessed": 6.5, "opp_dribbles_success_pct": 3.5, "opp_duels_won_pct": 44.38, "opp_errors_lead_to_goal": 1.0, "opp_errors_lead_to_shot": 1.5, "opp_final_third_entries": 38.38, "opp_final_third_phase_pct": 38.25, "opp_final_third_phase_pct_pct": 52.22, "opp_final_third_phase_pct_tot": 69.0, "opp_fouled_final_third": 1.0, "opp_fouls": 11.25, "opp_free_kicks": 8.88, "opp_gk_dive_saves": 1.29, "opp_gk_high_claims": 1.4, "opp_gk_penalty_saves": 1.0, "opp_gk_punches": 1.6, "opp_gk_saves": 4.88, "opp_goal_kicks": 11.0, "opp_ground_duels_won_pct": 25.38, "opp_hit_woodwork": 0.25, "opp_interceptions": 7.88, "opp_long_balls_accurate": 20.88, "opp_long_balls_accurate_pct": 38.21, "opp_long_balls_accurate_tot": 54.75, "opp_offsides": 2.0, "opp_pass_accuracy": 66.36, "opp_passes_accurate": 163.88, "opp_passes_total": 239.88, "opp_possession_pct": 30.0, "opp_red_cards": 1.0, "opp_shot_accuracy": 34.86, "opp_shots_blocked": 1.75, "opp_shots_inside_box": 3.62, "opp_shots_off_target": 2.5, "opp_shots_on_target": 2.5, "opp_shots_outside_box": 3.0, "opp_shots_total": 6.75, "opp_tackles": 14.0, "opp_tackles_won_pct": 7.62, "opp_through_balls_accurate": 0.14, "opp_throw_ins": 14.38, "opp_touches_opp_box": 11.38, "opp_yellow_cards": 1.71, "pass_accuracy": 87.89, "passes_accurate": 495.5, "passes_total": 562.25, "possession_pct": 70.0, "ppda": 7.79, "red_cards": 0.0, "shot_accuracy": 36.59, "shots_blocked": 5.5, "shots_inside_box": 16.75, "shots_off_target": 8.62, "shots_on_target": 8.5, "shots_outside_box": 5.75, "shots_total": 22.62, "tackles": 12.12, "tackles_won_pct": 6.62, "through_balls_accurate": 2.14, "throw_ins": 19.12, "touches_opp_box": 48.62, "yellow_cards": 0.86}}, 
+  {"name": "Ghana", "color": "#059669", "colorLight": "rgba(5,150,105,0.12)", "hasData": true, "matches": 4, "stats": {"possession_pct": 40.75, "ppda": 16.07, "pass_accuracy": 82.37, "shot_accuracy": 16.67, "touches_opp_box": 11.25, "big_chance_conv": 50.0, "duels_won_pct": 50.5, "final_third_entries": 35.25, "shots_total": 7.5, "opp_shots_total": 13.75, "big_chances_created": 0.25, "shots_on_target": 1.25}}, 
+  {"name": "Panama", "color": "#D97706", "colorLight": "rgba(217,119,6,0.12)", "hasData": true, "matches": 10, "stats": {"aerial_duels_won_pct": 14.2, "ball_recoveries": 44.1, "big_chance_conv": 32.24, "big_chances_created": 4.0, "big_chances_missed": 2.9, "big_chances_scored": 1.22, "clearances": 18.6, "corners": 6.2, "crosses_accurate": 5.3, "crosses_accurate_pct": 22.04, "crosses_accurate_tot": 21.6, "dispossessed": 11.1, "dribbles_success_pct": 7.7, "duels_won_pct": 50.0, "errors_lead_to_goal": 0.5, "errors_lead_to_shot": 1.0, "final_third_entries": 64.9, "final_third_phase_pct": 106.0, "final_third_phase_pct_pct": 72.2, "final_third_phase_pct_tot": 145.0, "fouled_final_third": 2.7, "fouls": 14.11, "free_kicks": 12.1, "gk_dive_saves": 0.2, "gk_high_claims": 0.25, "gk_penalty_saves": null, "gk_punches": 0.4, "gk_saves": 1.7, "goal_kicks": 6.3, "ground_duels_won_pct": 31.9, "hit_woodwork": 0.7, "interceptions": 6.7, "long_balls_accurate": 30.3, "long_balls_accurate_pct": 59.14, "long_balls_accurate_tot": 51.4, "n_matches": 10.0, "offsides": 2.67, "opp_aerial_duels_won_pct": 10.7, "opp_ball_recoveries": 39.1, "opp_big_chances_created": 1.3, "opp_big_chances_missed": 0.9, "opp_big_chances_scored": 0.44, "opp_clearances": 29.0, "opp_corners": 3.4, "opp_crosses_accurate": 2.3, "opp_crosses_accurate_pct": 17.69, "opp_crosses_accurate_tot": 12.8, "opp_dispossessed": 6.2, "opp_dribbles_success_pct": 5.3, "opp_duels_won_pct": 50.0, "opp_errors_lead_to_goal": 0.5, "opp_errors_lead_to_shot": 1.0, "opp_final_third_entries": 46.3, "opp_final_third_phase_pct": 29.33, "opp_final_third_phase_pct_pct": 49.48, "opp_final_third_phase_pct_tot": 58.17, "opp_fouled_final_third": 2.1, "opp_fouls": 11.22, "opp_free_kicks": 13.9, "opp_gk_dive_saves": 1.0, "opp_gk_high_claims": 1.25, "opp_gk_penalty_saves": null, "opp_gk_punches": 1.2, "opp_gk_saves": 4.0, "opp_goal_kicks": 11.2, "opp_ground_duels_won_pct": 35.0, "opp_hit_woodwork": 0.1, "opp_interceptions": 8.0, "opp_long_balls_accurate": 19.4, "opp_long_balls_accurate_pct": 35.68, "opp_long_balls_accurate_tot": 53.9, "opp_offsides": 2.11, "opp_pass_accuracy": 72.56, "opp_passes_accurate": 217.8, "opp_passes_total": 292.1, "opp_possession_pct": 38.2, "opp_red_cards": 0.0, "opp_shot_accuracy": 23.1, "opp_shots_blocked": 2.9, "opp_shots_inside_box": 4.1, "opp_shots_off_target": 3.8, "opp_shots_on_target": 2.3, "opp_shots_outside_box": 4.9, "opp_shots_total": 9.0, "opp_tackles": 17.3, "opp_tackles_won_pct": 11.0, "opp_through_balls_accurate": 0.67, "opp_throw_ins": 17.8, "opp_touches_opp_box": 7.5, "opp_yellow_cards": 1.9, "pass_accuracy": 84.29, "passes_accurate": 405.5, "passes_total": 476.7, "possession_pct": 61.8, "ppda": 12.43, "red_cards": 0.0, "shot_accuracy": 37.66, "shots_blocked": 3.9, "shots_inside_box": 12.0, "shots_off_target": 6.6, "shots_on_target": 6.1, "shots_outside_box": 4.6, "shots_total": 16.6, "tackles": 13.0, "tackles_won_pct": 8.6, "through_balls_accurate": 1.17, "throw_ins": 20.2, "touches_opp_box": 33.33, "yellow_cards": 1.4}}
+];
+
+const RADAR_DIMS = [
+  ["possession_pct", "Possesso", 74.38, false], 
+  ["ppda", "PPDA", 6.23, true],
+  ["pass_accuracy", "Pass acc.", 92.02, false], 
+  ["shot_accuracy", "Shot acc.", 50.37, false], 
+  ["touches_opp_box", "Tocchi area", 61.25, false], 
+  ["big_chance_conv", "Cinismo", 78.57, false], 
+  ["duels_won_pct", "Contrasti", 55.62, false], 
+  ["final_third_entries", "Terzo fin.", 95.25, false]
+];
+
+const RANKING_METRICS = [
+  ["possession_pct", "Possesso", "%", false, 74.38], 
+  ["shots_total", "Tiri a partita", "", false, 25.0], 
+  ["ppda", "PPDA", "", true, 15.96], 
+  ["pass_accuracy", "Precisione passaggi", "%", false, 92.02], 
+  ["shot_accuracy", "Precisione tiri", "%", false, 50.37], 
+  ["touches_opp_box", "Tocchi area avversaria", "", false, 61.25], 
+  ["opp_shots_total", "Tiri subiti", "", true, 15.83], 
+  ["duels_won_pct", "Contrasti vinti", "%", false, 55.62], 
+  ["big_chances_created", "Big chances create", "", false, 7.5], 
+  ["shots_on_target", "Tiri in porta", "", false, 9.67]
+];
+
+const FLAG_CODES = {"Algeria": "dz", "Arabia Saudita": "sa", "Argentina": "ar", "Australia": "au", "Austria": "at", "Belgio": "be", "Bosnia ed Erzegovina": "ba", "Brasile": "br", "Capo Verde": "cv", "Cechia": "cz", "Colombia": "co", "Corea del Sud": "kr", "Costa d'Avorio": "ci", "Croazia": "hr", "Curacao": "cw", "Ecuador": "ec", "Egitto": "eg", "Francia": "fr", "Germania": "de", "Ghana": "gh", "Giappone": "jp", "Giordania": "jo", "Haiti": "ht", "Inghilterra": "gb-eng", "Iran": "ir", "Iraq": "iq", "Marocco": "ma", "Messico": "mx", "Norvegia": "no", "Nuova Zelanda": "nz", "Olanda": "nl", "Panama": "pa", "Paraguay": "py", "Portogallo": "pt", "Qatar": "qa", "RD del Congo": "cd", "Scozia": "gb-sct", "Senegal": "sn", "Spagna": "es", "Sudafrica": "za", "Svezia": "se", "Svizzera": "ch", "Tunisia": "tn", "Turchia": "tr", "Uruguay": "uy", "USA": "us", "Uzbekistan": "uz", "Canada": "ca"};
+
+const PROFILES = {
+"Inghilterra": {
+    "rank": "#4",
+    "ct": "Thomas Tuchel", 
+    "ct_note": " Ex difensore, si è ritirato presto per dedicarsi alla carriera in panchina. Nominato CT dell'Inghilterra il 16 ottobre 2024, è entrato in carica il 1° gennaio 2025 come terzo tecnico straniero nella storia dei Tre Leoni (dopo Eriksson e Capello). Unico allenatore a raggiungere due finali di Champions consecutive con club diversi.", 
+    "convocati": "<b>Portieri:</b> D. Henderson, J. Pickford, J. Trafford.<br><b>Difensori:</b> D. Burn, M. Guéhi, R. James, E. Konsa, T. Livramento, N. O'Reilly, J. Quansah, D. Spence, J. Stones.<br><b>Centrocampisti:</b> E. Anderson, J. Bellingham, E. Eze, J. Henderson, K. Mainoo, D. Rice, M. Rogers.<br><b>Attaccanti:</b> A. Gordon, H. Kane, N. Madueke, M. Rashford, B. Saka, I. Toney, O. Watkins.",
+    "modulo": "4-2-3-1",
+    "campo": "L’Inghilterra arriva a questo Mondiale con una delle identità tattiche più moderne e dominanti del torneo. La squadra vuole controllare completamente la partita attraverso il possesso, la pressione alta e l’occupazione continua della metà campo avversaria. Il 4-2-3-1 di base cambia spesso forma durante il match: Stones guida la costruzione dal basso, Rice garantisce equilibrio e Bellingham ha totale libertà di muoversi tra le linee. Kane non agisce più solo da finalizzatore, ma si abbassa continuamente per legare il gioco e liberare spazio agli esterni offensivi. Saka e Rashford sono infatti il grande punto di forza inglese quando possono ricevere larghi e attaccare in velocità. L’Inghilterra cerca inoltre di recuperare immediatamente il pallone dopo la perdita, mantenendo ritmi molto alti e schiacciando spesso gli avversari nella propria area.",
+    "formazione": [{"n":1,"nome":"Pickford","pos":"GK"},{"n":2,"nome":"James","pos":"DD"},{"n":5,"nome":"Stones","pos":"DC_R"},{"n":6,"nome":"Guéhi","pos":"DC_L"},{"n":3,"nome":"O'Reilly","pos":"DS"},{"n":4,"nome":"Rice","pos":"MED_L"},{"n":8,"nome":"Anderson","pos":"MED_R"},{"n":7,"nome":"Saka","pos":"TRQ_R"},{"n":10,"nome":"Bellingham","pos":"TRQ_C"},{"n":11,"nome":"Rashford","pos":"TRQ_L"},{"n":9,"nome":"Kane","pos":"ATT"}],
+    "giocatori": [
+        {
+            "nome": "Harry Kane", 
+            "ruolo": "ATTACCANTE", 
+            "club": "Bayern Monaco", 
+            "desc": "Capitano e miglior marcatore della storia inglese. Arriverà al Mondiale dopo la sua miglior stagione in assoluto: 61 reti in stagione, 64 considerando il Mondiale per Club, e il riconoscimento della Scarpa d'Oro 2025-26. Oltre a finalizzare con straordinaria efficacia, funge da vero e proprio regista offensivo, venendo incontro per legare il gioco."
+        }, 
+        {
+            "nome": "Marc Guéhi", 
+            "ruolo": "DIFENSORE CENTRALE", 
+            "club": "Manchester City", 
+            "desc": "Primo Mondiale per lui, approdato al City a gennaio dal Crystal Palace per 23 milioni. Numeri notevoli per un difensore centrale: 5 gol stagionali (2 con il City, 3 con il Crystal Palace) e 5 assist (1 con il City, 4 con il Crystal Palace)."
+        }, 
+        {
+            "nome": "Marcus Rashford", 
+            "ruolo": "ESTERNO", 
+            "club": "Barcellona", 
+            "desc": "Dopo la grande delusione dell'esclusione da Euro 2024, sembra essersi ritrovato, trovando finalmente il suo spazio in un Barcellona ricco di concorrenza nel suo ruolo: 8 gol e 7 assist in 32 presenze, di cui 18 da titolare."
+        }
+    ], 
+    "curiosita": ["L'unica Coppa del Mondo vinta risale al 1966, in casa contro la Germania Ovest.", "Qualificata per l'ottava volta consecutiva ai Mondiali dopo che la squadra di Thomas Tuchel ha superato agevolmente le qualificazioni UEFA, qualificandosi con due partite di anticipo.", "Negli ultimi anni la nazionale ha raggiunto ottimi risultati, senza però portare a casa trofei: finale di Euro 2020 e finale di Euro 2024."]
+},
+"Croazia": {
+    "rank": "#11",
+    "ct": "Zlatko Dalić", 
+    "ct_note": "Preso in corsa nel 2017, ha salvato la qualificazione al Mondiale 2018 con una rimonta nei playoff contro la Grecia. In Russia 2018 ha guidato la Croazia alla finale. Nel 2022 ha ottenuto il 3° posto in Qatar. È il tecnico più vincente della storia croata e il primo a guidarla a tre grandi tornei consecutivi.", 
+    "convocati": "<b>Portieri:</b> D. Livaković, D. Kotarski, I. Pandur.<br><b>Difensori:</b> J. Gvardiol, D. Ćaleta-Car, J. Šutalo, J. Stanišić, M. Pongračić, M. Erlić, L. Vušković.<br><b>Centrocampisti:</b> L. Modrić, M. Kovačić, M. Pašalić, N. Vlašić, L. Sučić, M. Baturina, K. Jakić, P. Sučić, N. Moro, T. Fruk.<br><b>Attaccanti:</b> I. Perišić, A. Kramarić, A. Budimir, M. Pašalić, P. Musa, I. Matanović.",
+    "modulo": "4-3-3",
+    "campo": "La Croazia continua a rappresentare una nazionale costruita sull’intelligenza tattica, sulla gestione dei ritmi e sulla qualità del centrocampo. Modrić rimane il cervello assoluto del sistema: orienta il possesso, rallenta o accelera il gioco e trova continuamente linee verticali. Attorno a lui la Croazia ha inserito giocatori giovani e dinamici come Sučić e Baturina, che aggiungono intensità senza perdere tecnica. Il 4-2-3-1 croato punta molto sulla costruzione dal basso e sul controllo del pallone, con Gvardiol fondamentale per uscire dalla pressione grazie alle sue conduzioni e alla sua qualità in impostazione. Preferisce spesso abbassare il ritmo e “difendersi col pallone”, facendo correre gli avversari prima di colpire improvvisamente con verticalizzazioni verso Kramarić o Perišić. Difensivamente resta molto organizzata ed esperta, anche se contro squadre molto fisiche o rapide può soffrire maggiormente rispetto al passato.",
+    "formazione": [{"n":1,"nome":"Livaković","pos":"GK"},{"n":2,"nome":"Stanišić","pos":"DD"},{"n":6,"nome":"Šutalo","pos":"DC_R"},{"n":5,"nome":"Ćaleta-Car","pos":"DC_L"},{"n":4,"nome":"Gvardiol","pos":"DS"},{"n":8,"nome":"Sučić","pos":"MED_L"},{"n":10,"nome":"Modrić","pos":"MED_R"},{"n":15,"nome":"Baturina","pos":"TRQ_R"},{"n":9,"nome":"Kramarić","pos":"TRQ_C"},{"n":14,"nome":"Perišić","pos":"TRQ_L"},{"n":17,"nome":"Budimir","pos":"ATT"}],
+    "giocatori": [
+      {
+        "nome": "Ivan Perišić", 
+        "ruolo": "ESTERNO", 
+        "club": "PSV Eindhoven", 
+        "desc": "Ex campione d'Italia con l'Inter e vincitore del Triplete con il Bayern Monaco nel 2019-20. Ancora incisivo con il PSV: 19 partecipazioni al gol in 30 partite. Trascinante anche in nazionale, con 4 gol e 4 assist nelle qualificazioni al Mondiale."
+      }, 
+      {
+        "nome": "Petar Sučić", 
+        "ruolo": "MEZZALA", 
+        "club": "Inter", 
+        "desc": "Giocatore in forte crescita, ha dimostrato il suo potenziale con gol importanti: quello contro il Como in semifinale di Coppa Italia e il meraviglioso gol contro l'Arsenal in Champions League. Con la nazionale ha ancora un solo centro all'attivo."
+      }, 
+      {
+        "nome": "Andrej Kramarić", 
+        "ruolo": "TREQUARTISTA", 
+        "club": "TSG Hoffenheim", 
+        "desc": "Trequartista tecnico e prolifico. Grande stagione con 14 gol e 6 assist in 34 partite (26 da titolare) in Bundesliga. Capocannoniere della nazionale nelle qualificazioni al Mondiale con 6 reti."
+      }
+    ], 
+    "curiosita": ["Finale nel 2018 e 3° posto nel 2022, la più forte generazione croata di sempre.", "Qualificata grazie al primo posto nel Girone L, vinto con una giornata d'anticipo.", "La Croazia ha soli 4 milioni di abitanti ma sforna continuamente talenti mondiali."]
+},
+"Ghana": {
+    "rank": "#74",
+    "ct": "Carlos Queiroz", 
+    "ct_note": "Una delle figure più esperte del calcio mondiale con oltre 40 anni di carriera. Come assistente di Sir Alex Ferguson allo United (1992–93 e 2002–08) è stato architetto di due titoli di Premier League e di una Champions League. Come tecnico del Portogallo (2010) ha portato la squadra agli ottavi del Mondiale. Con l'Iran ha disputato i Mondiali del 2014 e 2018. Ha guidato il Sudafrica alla qualificazione al 2002, l'Egitto alla finale di Coppa d'Africa 2021. Ha avuto esperienze anche con Qatar (2023) e Oman prima di approdare al Ghana. Nominato dalla Federazione ghanese in aprile 2026, a soli due mesi dal Mondiale", 
+    "convocati": "<b>Portieri:</b> B. Asare, L. Ati-Zigi, J. Anang.<br><b>Difensori:</b> B. Rahman, G. Mensah, M. Senaya, A. Seidu, A. Mumin, J. Opoku, J. Adjetey, K. Oppong Peprah, D. Luckassen.<br><b>Centrocampisti:</b> E. Owusu, T. Partey, K. Sibo, A. Boakye, C. Yirenkyi, A. Fatawu, K. Sulemana.<br><b>Attaccanti:</b> C. Bonsu Baah, E. Nuamah, A. Semenyo, B. Thomas-Asante, P. Adu, I. Williams, J. Ayew.",
+    "modulo": "5-4-1",
+    "campo": "Il Ghana propone un calcio molto diretto e fisico. La squadra non cerca di dominare il possesso, ma punta soprattutto su aggressività, atletismo e ripartenze veloci. Il sistema più utilizzato è un 5-4-1 basso e compatto, con l’obiettivo di chiudere centralmente gli spazi e ripartire appena recuperato il pallone. Thomas Partey è il vero leader tecnico e tattico: recupera palloni, dà equilibrio e soprattutto verticalizza immediatamente verso gli uomini offensivi. Il Ghana crea meno occasioni rispetto alle altre squadre del girone, ma quando riesce a ripartire è molto pericoloso e concreto. Il grande limite resta la costruzione dal basso: sotto pressione la squadra perde qualità tecnica e fatica a uscire pulita, rischiando lunghi momenti senza possesso contro avversari più organizzati.",
+    "formazione": [{"n":1,"nome":"Ati-Zigi","pos":"GK"},{"n":2,"nome":"Yirenkyi","pos":"DD"},{"n":18,"nome":"Adjetey","pos":"DC_R"},{"n":4,"nome":"Opoku","pos":"DC_C"},{"n":14,"nome":"Mensah","pos":"DS"},{"n":5,"nome":"Partey","pos":"CC_R"},{"n":21,"nome":"Sibo","pos":"CC_L"},{"n":11,"nome":"Oppong","pos":"DC_L"},{"n":20,"nome":"Semenyo","pos":"ES"},{"n":9,"nome":"J.Ayew","pos":"ATT"},{"n":19,"nome":"Fatawu","pos":"ED"}],
+    "giocatori": [
+        {
+            "nome": "Jordan Ayew", 
+            "ruolo": "ATTACCANTE", 
+            "club": "Leicester City", 
+            "desc": "Punta centrale che parte spesso dalla panchina ma abituata a entrare in ogni partita. Capocannoniere del Ghana nelle qualificazioni al Mondiale con 7 gol, uno ogni 109 minuti. In Championship ha firmato 6 reti in 42 presenze (52% da titolare)."
+        }, 
+        {
+            "nome": "Thomas Partey", 
+            "ruolo": "MEDIANO", 
+            "club": "Villarreal", 
+            "desc": "Capitano e leader indiscusso della squadra. Gioca da mediano ma ha comunque saputo segnare 3 gol nelle qualificazioni al Mondiale. Cinque anni all'Atlético de Madrid (2015-20) e cinque anni all'Arsenal (2020-25), acquistato dai Gunners per 50 milioni di euro."
+        }, 
+        {
+            "nome": "Kamaldeen Sulemana", 
+            "ruolo": "ATTACCANTE", 
+            "club": "Atalanta", 
+            "desc": "Arrivato a Bergamo l'estate scorsa dal Southampton per 17.5 milioni, non ha trovato molto spazio ma ha comunque inciso con 3 gol, tutti realizzati contro squadre torinesi: 2 alla Juventus e 1 al Torino."
+        }
+    ], 
+    "curiosita": ["Nel 2010 sfiorò una storica semifinale, perdendo ai rigori contro l'Uruguay, con la partita sul 1–1, Suárez parò un tiro di mano sulla linea. Penalty sbagliato da Asamoah Gyan e sogno infranto.", "Quinta partecipazione del Ghana alla massima competizione calcistica mondiale, dopo il debutto in Germania nel 2006.", "Si qualifica al Mondiale vincendo il Girone I con 25 punti in 10 partite, subendo soltanto 6 gol."]
+},
+"Panama": {
+    "rank": "#33",
+    "ct": "Thomas Christiansen", 
+    "ct_note": "CT Danese-spagnolo, dopo l'esperienza con lo Union Saint-Gilloise, approda al Panama nel 2020. Con i Canaleros ha costruito una squadra organizzata e coraggiosa: ha portato Panama al 2° posto in Gold Cup 2023 e alla Copa América 2024. Da bambino ha vissuto a Panama, un legame emotivo che ha influenzato la sua scelta di accettare l'incarico.", 
+    "convocati": "<b>Portieri:</b> O. Mosquera, L. Mejía, C. Samudio.<br><b>Difensori:</b> C. Blackman, J. Gutiérrez, A. Murillo, F. Escobar, A. Andrade, E. Fariña, J. Córdoba, É. Davis, J. Ramos, R. Miller.<br><b>Centrocampisti:</b> A. Godoy, A. Carrasquilla, C. Harvey, C. Martínez, J. Rodríguez, C. Yanis, Y. Bárcenas, A. Quintero, A. Londoño.<br><b>Attaccanti:</b> I. Díaz, C. Waterman, J. Fajardo, T. Rodríguez.",
+    "modulo": "3-4-3",
+    "campo": "Il Panama è probabilmente la squadra più sottovalutata del gruppo dal punto di vista tattico. Pur non avendo grandi individualità, Panama prova davvero a giocare un calcio propositivo e organizzato. Il 3-4-3 di Christiansen si trasforma spesso in un 3-2-5 offensivo, con gli esterni molto alti e Carrasquilla che gestisce il possesso da vero metronomo della squadra. Panama costruisce molto dal basso, cerca superiorità numerica attraverso le rotazioni del centrocampo e utilizza bene le corsie laterali per portare uomini in area. Quando perde palla, però, la struttura cambia rapidamente e diventa un 5-4-1 compatto e ordinato. Difensivamente la squadra sa sacrificarsi, ma può andare in difficoltà contro pressing molto aggressivi o contro attaccanti di livello superiore. Il limite principale resta infatti la qualità individuale rispetto alle big del girone, anche se dal punto di vista collettivo Panama è una squadra molto più evoluta di quanto si possa pensare.",
+    "formazione": [{"n":22,"nome":"Mosquera","pos":"GK"},{"n":4,"nome":"Andrade","pos":"DC_R"},{"n":3,"nome":"Córdoba","pos":"DC_C"},{"n":5,"nome":"Harvey","pos":"DC_L"},{"n":23,"nome":"Murillo","pos":"ED"},{"n":8,"nome":"Carrasquilla","pos":"CC_R"},{"n":20,"nome":"Godoy","pos":"CC_L"},{"n":15,"nome":"Davis","pos":"ES"},{"n":11,"nome":"Rodriguez","pos":"AD"},{"n":10,"nome":"Díaz","pos":"AS"},{"n":17,"nome":"Fajardo","pos":"ATT"}],
+    "giocatori": [
+        {
+            "nome": "José Fajardo", 
+            "ruolo": "ATTACCANTE", 
+            "club": "Universidad Católica", 
+            "desc": "L'attaccante più incisivo della squadra nelle qualificazioni al Mondiale, con 3 gol realizzati a una media di uno ogni 133 minuti."
+        }, 
+        {
+            "nome": "Adalberto Carrasquilla", 
+            "ruolo": "MEDIANO", 
+            "club": "Pumas UNAM", 
+            "desc": "Alto 170 cm ma grande lottatore in mezzo al campo. Il metronomo e cuore pulsante della squadra: qualità di palleggio, visione periferica e continui recuperi. Nelle qualificazioni al Mondiale ha registrato una percentuale del 94,8% nei duelli vinti e del 94,2% nei duelli aerei vinti."
+        }, 
+        {
+            "nome": "Ismael Díaz", 
+            "ruolo": "ESTERNO SINISTRO", 
+            "club": "León FC", 
+            "desc": "Esterno sinistro talentuoso e dinamico. Ha firmato 5 gol e 5 assist nella Liga MX, il massimo campionato messicano. Recente capocannoniere con 6 gol in CONCACAF GOLD CUP."
+        }
+    ], 
+    "curiosita": ["Quella del 2026 è solo la seconda partecipazione panamense ai Mondiali, dopo il debutto nel 2018 in Russia, dove persero tutti e tre i match ma segnarono il loro primo gol nella storia della competizione (José Luís Rodríguez).", "Los Canaleros hanno chiuso al primo posto nel Gruppo A di CONCAF, assicurandosi così il pass per il palcoscenico mondiale.", "Con meno di 5 milioni di abitanti, Panama è tra i paesi più piccoli demograficamente a qualificarsi per il Mondiale 2026. Un risultato che celebra l'enorme crescita del calcio centroamericano."]
+}
+};
+
+const POS_MAP = {
+  "GK": [50, 92],
+  "DC_C": [50, 78], "DC_L": [30, 78], "DC_R": [70, 78], "DD": [88, 75], "DS": [12, 75],
+  "MED": [50, 58], "MED_L": [38, 60], "MED_R": [62, 60],
+  "CC_L": [30, 50], "CC_R": [70, 50], "CC_C": [50, 50], "ED": [90, 48], "ES": [10, 48],
+  "TRQ_C": [50, 35], "TRQ_L": [25, 35], "TRQ_R": [75, 35],
+  "AD": [82, 22], "AS": [18, 22], "ATT": [50, 15], "ATT_L": [35, 15], "ATT_R": [65, 15]
+};
+
+let cmpChart = null;
+
+function fmt(v,u){ return v==null?'–':v.toFixed(1)+u }
+
+function norm(v, benchmark, invert = false) { 
+  if (v == null || v === 0) return 0;
+  if (invert) {
+    return Math.max(0, Math.min(100, (benchmark / v) * 100));
+  } else {
+    return Math.max(0, Math.min(100, (v / benchmark) * 100));
+  }
+}
+
+function flagUrl(name){ const c=FLAG_CODES[name]; return c?`https://flagcdn.com/w80/${c}.png`:null }
+function flagEl(name,w,h){ const u=flagUrl(name); return u?`<img src="${u}" style="width:${w}px;height:${h}px;object-fit:cover;border-radius:3px" alt="${name}" loading="lazy">`:''}
+function initials(n){ return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() }
+
+function show(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on'); btn.classList.add('active');
+  if(id==='compare') initCmp();
+  if(id==='ranking') buildRanking();
+}
+
+function openDrawer(teamName){
+  const p = PROFILES[teamName];
+  const t = TEAMS.find(x=>x.name===teamName);
+  if(!p) return;
+  
+  const fu = flagUrl(teamName);
+  const flagHtml = fu
+    ? `<img class="drawer-flag" src="${fu}" alt="${teamName}">`
+    : `<div class="drawer-flag-fb" style="background:${t?t.colorLight:'#eee'};color:${t?t.color:'#333'}">${initials(teamName)}</div>`;
+
+  document.getElementById('drawer-hero').innerHTML = `
+    <button class="drawer-close" onclick="closeDrawer()">&#10005;</button>
+    ${flagHtml}
+    <div class="drawer-title">${teamName} <span style="font-size:22px;color:var(--text3);font-weight:600">${p.rank||''}</span></div>
+    <div class="drawer-subtitle">Modulo: <b>${p.modulo}</b> &nbsp;·&nbsp; CT: <b>${p.ct}</b></div>`;
+
+  let colLeft = '<div>';
+  let colRight = '<div>';
+
+  if(p.curiosita && p.curiosita.length){
+    colLeft += `<div class="drawer-section">
+      <div class="ds-title">Curiosità e Storia</div>
+      <ul class="curiosita-list">`;
+    p.curiosita.forEach(c=>{ colLeft += `<li>${c}</li>`; });
+    colLeft += `</ul></div>`;
+  }
+
+  colLeft += `<div class="drawer-section">
+    <div class="ds-title">Storia del Commissario Tecnico</div>
+    <div class="ct-card">
+      <div class="ct-badge" style="background:${t?t.colorLight:'#eee'}">🧠</div>
+      <div><div class="ct-name">${p.ct}</div><div class="ct-note">${p.ct_note}</div></div>
+    </div>
+  </div>`;
+
+  if(p.campo){
+    colLeft += `<div class="drawer-section">
+      <div class="ds-title">Analisi in campo</div>
+      <div class="ct-note" style="background:var(--bg); padding:16px; border-radius:12px; font-style:italic; border:1px solid var(--border); font-size:14px;">${p.campo}</div>
+    </div>`;
+  }
+  
+  if(p.convocati){
+    colLeft += `<div class="drawer-section">
+      <div class="ds-title">I 26 Convocati</div>
+      <div class="ct-note" style="background:var(--bg); padding:14px; border-radius:12px; border:1px solid var(--border); font-size:13.5px; line-height:1.6;">
+        ${p.convocati}
+      </div>
+    </div>`;
+  }
+  
+  colLeft += '</div>';
+  
+  if(p.formazione){
+    colRight += `<div class="drawer-section">
+      <div class="ds-title">Probabile Formazione</div>
+      <div class="tactical-board">
+        <div class="pitch-line area-top"></div><div class="pitch-line area-bot"></div>
+        <div class="pitch-line mid-line"></div><div class="pitch-line center-circle"></div>`;
+    p.formazione.forEach(pl => {
+      const coords = POS_MAP[pl.pos] || [50, 50];
+      colRight += `<div class="player-pin" style="left:${coords[0]}%; top:${coords[1]}%">
+        <div class="pin-circle" style="border-color:${t.color}">${pl.n}</div>
+        <div class="pin-name">${pl.nome}</div>
+      </div>`;
+    });
+    colRight += `</div></div>`;
+  }
+
+  if(p.giocatori && p.giocatori.length){
+    colRight += `<div class="drawer-section"><div class="ds-title">Calciatori da tener d'occhio</div><div class="player-list">`;
+    p.giocatori.forEach((g,i)=>{
+      colRight += `<div class="player-item">
+        <div class="player-num" style="background:${t?t.color:'#555'}">${i+1}</div>
+        <div style="flex:1">
+          <div class="player-name">${g.nome}</div>
+          <div class="player-meta">${g.club}</div>
+          ${g.desc ? `<div class="player-desc">${g.desc}</div>` : ''}
+        </div>
+        <div class="player-role" style="background:var(--dark)">${g.ruolo}</div>
+      </div>`;
+    });
+    colRight += `</div></div>`;
+  }
+  colRight += '</div>';
+
+  const finalBody = `<div class="modal-grid">${colLeft}${colRight}</div>`;
+  document.getElementById('drawer-body').innerHTML = finalBody;
+  
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  document.body.style.overflow = 'hidden'; 
+}
+
+function closeDrawer(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
+
+function buildHeroTeams(){
+  const el = document.getElementById('hero-teams');
+  TEAMS.forEach(t=>{
+    const pill = document.createElement('div');
+    pill.className='hero-pill';
+    const u=flagUrl(t.name);
+    pill.innerHTML=(u?`<img src="${u}" alt="${t.name}">`:'')+'<span>'+t.name+'</span>';
+    el.appendChild(pill);
+  });
+}
+
+function buildKPI(){
+  const strip = document.getElementById('kpi-strip');
+  const manualKPIs = [
+    { label: 'Ingressi terzo offensivo', value: '95.2', unit: '', team: 'Inghilterra', cls: 'red' },
+    { label: 'Cross tentati', value: '30.3', unit: '', team: 'Croazia', cls: 'blue' },
+    { label: 'Gol di testa', value: '9', unit: '', team: 'Ghana', cls: 'green' },
+    { label: 'Big chance create', value: '4.0', unit: '', team: 'Panama', cls: 'gold' }
+  ];
+  manualKPIs.forEach(kpi => {
+    const card = document.createElement('div');
+    card.className = `kpi ${kpi.cls}`;
+    card.innerHTML = `<div class="kpi-label">${kpi.label}</div>
+      <div class="kpi-value">${kpi.value}${kpi.unit}</div>
+      <div class="kpi-team">${flagEl(kpi.team, 18, 13)} ${kpi.team}</div>`;
+    strip.appendChild(card);
+  });
+}
+
+function buildOverview(){
+  const grid=document.getElementById('ov-grid');
+  TEAMS.forEach(t=>{
+    const card=document.createElement('div');
+    card.className='tcard';
+    card.onclick=()=>openDrawer(t.name);
+    const fu=flagUrl(t.name);
+    const badge=fu?`<div class="flag-wrap"><img src="${fu}" alt="${t.name}"></div>`
+                  :`<div class="flag-fb" style="background:${t.colorLight};color:${t.color}">${initials(t.name)}</div>`;
+    let h=`<style>.tc-${t.name.replace(/ /g,'-').replace(/'/g,'')}::before{background:linear-gradient(90deg,${t.color},${t.color}66)}</style>`;
+    card.classList.add(`tc-${t.name.replace(/ /g,'-').replace(/'/g,'')}`);
+    h+=`<div class="card-hdr">${badge}<div>
+      <div class="tname">${t.name} <span style="font-size:12px; color:var(--text3)">${PROFILES[t.name]?.rank || ''}</span></div>
+      <div class="tsub">${t.matches} partite analizzate</div>
+    </div></div>`;
+    if(!t.hasData){
+      h+=`<div class="nodata-badge">&#9888; Dati non disponibili</div>
+          <p class="nodata-text">Statistiche non disponibili su Sofascore per questa confederazione.</p>`;
+    } else {
+      const s=t.stats;
+      [['Possesso palla',s.possession_pct,74.38,false],
+       ['Precisione passaggi',s.pass_accuracy,92.02,false],
+       ['PPDA',s.ppda,6.23,true],
+       ['Big chance sfruttate',s.big_chance_conv,78.57,false]].forEach(([l,v,m,invert])=>{
+        const pct = norm(v, m, invert);
+        h+=`<div class="brow"><div class="blbl"><span>${l}</span><span>${v!=null?v.toFixed(1)+(l.includes('PPDA')?'':'%'):'–'}</span></div>
+          <div class="btrk"><div class="bfll" style="width:${pct.toFixed(1)}%;background:${t.color}"></div></div></div>`;
+      });
+      h+=`<div class="divider"></div>`;
+      [['Tiri a partita',fmt(s.shots_total,'')],['Tiri in porta (%)',fmt(s.shot_accuracy,'%')],
+       ['Tocchi area avv.',fmt(s.touches_opp_box,'')],['Big chances create',fmt(s.big_chances_created,'')],
+       ['Tiri subiti',fmt(s.opp_shots_total,'')]].forEach(([l,v])=>{
+        h+=`<div class="srow"><span class="slbl">${l}</span><span class="sval">${v}</span></div>`;
+      });
+    }
+    h+=`<div class="click-hint">&#128269; Clicca per aprire la Scheda</div>`;
+    card.innerHTML=h;
+    grid.appendChild(card);
+  });
+}
+
+function buildRadars(){
+  const grid=document.getElementById('rd-grid');
+  TEAMS.filter(t=>t.hasData).forEach(t=>{
+    const cid='r-'+t.name.replace(/ /g,'-').replace(/'/g,'');
+    const card=document.createElement('div');
+    card.className='rcard';
+    const fu=flagUrl(t.name);
+    const fl=fu?`<img src="${fu}" style="width:22px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;margin-right:5px" alt="">`:'';
+    card.innerHTML=`<div class="rname">${fl}${t.name}</div>
+      <div class="rsub">${t.matches} partite</div>
+      <div style="position:relative;height:240px"><canvas id="${cid}"></canvas></div>`;
+    grid.appendChild(card);
+    setTimeout(()=>{
+      const ctx=document.getElementById(cid).getContext('2d');
+      const g=ctx.createRadialGradient(120,120,10,120,120,120);
+      g.addColorStop(0,t.color+'55'); g.addColorStop(1,t.color+'0a');
+      new Chart(ctx,{type:'radar',data:{labels:RADAR_DIMS.map(d=>d[1]),datasets:[{
+        data: RADAR_DIMS.map(d => norm(t.stats[d[0]], d[2], d[3])),
+        backgroundColor:g,borderColor:t.color,borderWidth:2.5,pointBackgroundColor:t.color,pointBorderColor:'#fff',pointBorderWidth:1.5,pointRadius:4,pointHoverRadius:6
+      }]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+        scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(128,128,128,.10)'},
+          pointLabels:{font:{size:11,weight:'500',family:"'Inter',sans-serif"},color:'rgba(128,128,128,.85)'},
+          angleLines:{color:'rgba(128,128,128,.10)'}}}}});
+    },50);
+  });
+}
+
+function initCmp(){
+  const elig=TEAMS.filter(t=>t.hasData);
+  if(elig.length<2) return;
+  const sA=document.getElementById('sel-a'),sB=document.getElementById('sel-b');
+  if(!sA.options.length){ elig.forEach((t,i)=>{sA.add(new Option(t.name,i));sB.add(new Option(t.name,i));});sB.selectedIndex=Math.min(1,elig.length-1);}
+  drawCmp();
+}
+
+function drawCmp(){
+  const elig=TEAMS.filter(t=>t.hasData);
+  const tA=elig[parseInt(document.getElementById('sel-a').value)];
+  const tB=elig[parseInt(document.getElementById('sel-b').value)];
+  if(!tA||!tB) return;
+  document.getElementById('cmp-leg').innerHTML=`
+    <div class="li"><span class="ldot" style="background:${tA.color}"></span>${flagEl(tA.name,18,13)} ${tA.name}</div>
+    <div class="li"><span class="ldot" style="background:${tB.color}"></span>${flagEl(tB.name,18,13)} ${tB.name}</div>`;
+  const ctx=document.getElementById('cmp-canvas').getContext('2d');
+  if(cmpChart) cmpChart.destroy();
+  const gA=ctx.createRadialGradient(250,250,20,250,250,220);
+  gA.addColorStop(0,tA.color+'50');gA.addColorStop(1,tA.color+'08');
+  const gB=ctx.createRadialGradient(250,250,20,250,250,220);
+  gB.addColorStop(0,tB.color+'40');gB.addColorStop(1,tB.color+'06');
+  cmpChart=new Chart(ctx,{type:'radar',data:{labels:RADAR_DIMS.map(d=>d[1]),datasets:[
+    {label:tA.name, data: RADAR_DIMS.map(d => norm(tA.stats[d[0]], d[2], d[3])), backgroundColor:gA,borderColor:tA.color,borderWidth:2.5,pointBackgroundColor:tA.color,pointBorderColor:'#fff',pointBorderWidth:1.5,pointRadius:5},
+    {label:tB.name, data: RADAR_DIMS.map(d => norm(tB.stats[d[0]], d[2], d[3])), backgroundColor:gB,borderColor:tB.color,borderWidth:2.5,pointBackgroundColor:tB.color,pointBorderColor:'#fff',pointBorderWidth:1.5,pointRadius:5,borderDash:[6,3]},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(128,128,128,.10)'},
+      pointLabels:{font:{size:12,weight:'600',family:"'Inter',sans-serif"},color:'rgba(128,128,128,.85)'},
+      angleLines:{color:'rgba(128,128,128,.10)'}}}}});
+}
+
+function buildRanking(){
+  const grid=document.getElementById('rk-grid');
+  if(grid.children.length) return;
+  RANKING_METRICS.forEach(([key,label,unit,invert,max])=>{
+    const elig=TEAMS.filter(t=>t.hasData&&t.stats[key]!=null);
+    if(!elig.length) return;
+    
+    const sorted=[...elig].sort((a,b)=>invert?a.stats[key]-b.stats[key]:b.stats[key]-a.stats[key]);
+    
+    const card=document.createElement('div'); card.className='rkcard';
+    let h=`<div class="rktitle">${label}</div>`;
+    
+    let bestValue = max;
+    if (key === 'ppda') bestValue = 6.23;
+    if (key === 'opp_shots_total') bestValue = 3.83;
+
+    sorted.forEach((t,i)=>{
+      const v=t.stats[key];
+      const pct = norm(v, bestValue, invert);
+      
+      h+=`<div class="ritem">
+        <span class="rnum">${i+1}</span>
+        ${flagEl(t.name,22,16)}
+        <span class="rname2">${t.name}</span>
+        <div class="rtrk"><div class="rfll" style="width:${pct.toFixed(1)}%;background:${t.color}"></div></div>
+        <span class="rval">${v.toFixed(1)}${unit}</span>
+      </div>`;
+    });
+    const miss=TEAMS.filter(t=>!t.hasData||t.stats[key]==null);
+    if(miss.length) h+=`<div class="rnd">Dati n/d: ${miss.map(t=>t.name).join(', ')}</div>`;
+    card.innerHTML=h; grid.appendChild(card);
+  });
+}
+
+buildHeroTeams(); buildKPI(); buildOverview(); buildRadars();
+</script>
+</body>
+</html>
